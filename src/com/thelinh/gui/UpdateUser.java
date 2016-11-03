@@ -5,17 +5,60 @@
  */
 package com.thelinh.gui;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.thelinh.controller.Controller;
+import com.thelinh.controller.LoadTable;
+import com.thelinh.model.Subject;
+import com.thelinh.model.User;
+import java.awt.event.ItemEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+
 /**
  *
  * @author hoangkien
  */
 public class UpdateUser extends javax.swing.JFrame {
 
+    String sql = "SELECT * FROM Users ORDER BY UserId ASC";
+    private static PreparedStatement ps = null;
+    int k = 1;
     /**
      * Creates new form UpdateUser
      */
     public UpdateUser() {
         initComponents();
+        LoadTable.loadDataUser(sql, tbUser);
     }
 
     /**
@@ -39,13 +82,17 @@ public class UpdateUser extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtFilterId = new javax.swing.JTextField();
+        txtFilterUserId = new javax.swing.JTextField();
         txtFilterName = new javax.swing.JTextField();
         txtFilterBirthday = new javax.swing.JTextField();
-        txtFilterAddress = new javax.swing.JTextField();
+        txtFilterPassword = new javax.swing.JTextField();
         txtFilterClass = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
-        btnShowAll = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnAddFile = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        cbUser = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,10 +104,25 @@ public class UpdateUser extends javax.swing.JFrame {
         });
 
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnExport.setText("Xuất biểu mẫu");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         tbUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,20 +132,30 @@ public class UpdateUser extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Mã người dùng", "Họ tên", "Ngày sinh", "Địa chỉ", "Lớp"
+                "Mã người dùng", "Password", "Họ tên", "Ngày sinh", "Lớp"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, true, true, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
+        tbUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbUserMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbUser);
 
         btnExit.setText("Thoát");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Mã người dùng");
 
@@ -91,66 +163,109 @@ public class UpdateUser extends javax.swing.JFrame {
 
         jLabel3.setText("Ngày sinh");
 
-        jLabel4.setText("Địa chỉ");
+        jLabel4.setText("Password");
 
         jLabel6.setText("Lớp");
 
         btnSearch.setText("Tìm kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
-        btnShowAll.setText("Hiển thị tất cả");
+        btnAddFile.setText("Thêm File");
+        btnAddFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddFileActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Tìm kiếm theo");
+
+        cbUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "UserId", "Password", "UserName", "Class", "None", " " }));
+        cbUser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbUserItemStateChanged(evt);
+            }
+        });
+
+        jButton1.setText("PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel3))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtFilterUserId, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel4)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnAdd)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnAddFile)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnEdit)
+                                .addGap(27, 27, 27)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFilterId, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(txtFilterAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(173, 173, 173))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(txtFilterPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnDelete)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnExport)
+                                .addGap(16, 16, 16))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(17, 17, 17)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtFilterClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(40, 40, 40)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnShowAll)
-                            .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(188, 188, 188))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnExit)
+                            .addComponent(txtFilterClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1))
+                        .addGap(327, 327, 327))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEdit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExit)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addComponent(jScrollPane1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtSearch)
+                                .addGap(554, 554, 554))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbUser, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnDelete, btnEdit});
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFilterAddress, txtFilterBirthday, txtFilterClass, txtFilterId, txtFilterName});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFilterBirthday, txtFilterClass, txtFilterName, txtFilterPassword, txtFilterUserId});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,33 +275,343 @@ public class UpdateUser extends javax.swing.JFrame {
                     .addComponent(btnEdit)
                     .addComponent(btnDelete)
                     .addComponent(btnExport)
-                    .addComponent(btnExit))
+                    .addComponent(btnExit)
+                    .addComponent(btnAddFile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel3)
-                    .addComponent(txtFilterId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch)
+                    .addComponent(txtFilterUserId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFilterClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
+                    .addComponent(jLabel6)
+                    .addComponent(txtFilterPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3)
+                            .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel4)
-                    .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFilterAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnShowAll))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE))
+                    .addComponent(btnSearch)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(cbUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String sql1 = "SELECT * FROM Users";
+        String sql2 = "SELECT * FROM Users WHERE UserId LIKE '%" + txtSearch.getText() + "%'"; 
+        String sql3 = "SELECT * FROM Users WHERE Password LIKE '%" + txtSearch.getText() + "%'"; 
+        String sql4 = "SELECT * FROM Users WHERE UserName LIKE '%" + txtSearch.getText() + "%'";
+        String sql5 = "SELECT * FROM Users WHERE Class LIKE '%" + txtSearch.getText() + "%'";
+        
+        switch(k){
+            case 1:
+                LoadTable.loadDataUser(sql2, tbUser);
+                break;
+            case 2:
+                LoadTable.loadDataUser(sql3, tbUser);
+                break;
+            case 3:
+                LoadTable.loadDataUser(sql4, tbUser);
+                break;
+            case 4:
+                LoadTable.loadDataUser(sql5, tbUser);
+                break;
+            case 5:
+                LoadTable.loadDataUser(sql1, tbUser);
+                break;
+                
+        }
+        
+    }//GEN-LAST:event_btnSearchActionPerformed
+
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
+        if(txtFilterUserId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter UserId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterUserId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "UserId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            String sql = "SELECT UserId FROM Users";
+            ResultSet rs = LoadTable.Display(sql);
+            try {
+                while(rs.next()){
+                    if(rs.getString("UserId") == txtFilterUserId.getText()){
+                        JOptionPane.showMessageDialog(null, "This UserId already exists", "Notification", JOptionPane.INFORMATION_MESSAGE);
+ 
+                    }
+                        }
+                // xu li chua chuan lam! :(
+                Date dt = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(txtFilterBirthday.getText()).getTime());
+                User user = new User(txtFilterUserId.getText(), txtFilterPassword.getText(), txtFilterName.getText(), dt, txtFilterClass.getText());
+                Controller.insertUser(user);
+                btnSearch.doClick();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "ERROR");
+            } catch (ParseException ex) {
+                Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+         if(txtFilterUserId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter UserId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterUserId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "UserId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to edit?");
+            if(click == JOptionPane.YES_OPTION){
+               
+                try {
+                    Date dt = new Date(new SimpleDateFormat("yyyy-MM-dd").parse(txtFilterBirthday.getText()).getTime());
+                    User user = new User(txtFilterUserId.getText(), txtFilterPassword.getText(), txtFilterName.getText(), dt, txtFilterClass.getText());
+                    if(Controller.updateUser(user)){
+                        JOptionPane.showMessageDialog(null, "Edit Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "UserId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+                    }
+                    btnSearch.doClick();
+                } catch (ParseException ex) {
+                    Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } 
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void tbUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbUserMouseClicked
+        int row = tbUser.getSelectedRow();
+        String rowId = (tbUser.getModel().getValueAt(row, 0)).toString();
+        
+        String sql1 = "SELECT * FROM Users WHERE UserId = '" + rowId + "'";
+        ResultSet rs = LoadTable.Display(sql1);
+        try {
+            if(rs.next()){
+                txtFilterUserId.setText(rs.getString("UserId"));
+                txtFilterPassword.setText(rs.getString("Password"));
+                txtFilterName.setText(rs.getString("UserName"));
+                txtFilterBirthday.setText(rs.getString("BirthDay"));
+                txtFilterClass.setText(rs.getString("Class"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR");
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_tbUserMouseClicked
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(txtFilterUserId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter UserId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterUserId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "UserId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to delete?");
+            if(click == JOptionPane.YES_OPTION){
+                if(Controller.deleteUser(txtFilterUserId.getText())){
+                    JOptionPane.showMessageDialog(null, "Delete Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "UserId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+                btnSearch.doClick();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        JFileChooser jfc = new JFileChooser("Save File");
+        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            jfc.setDialogTitle("Save File");
+            File file = jfc.getSelectedFile();
+            WritableWorkbook wb;
+            try {
+                wb = Workbook.createWorkbook(file);
+                WritableSheet sheet = wb.createSheet("User", 0);
+                try {
+                    switch(k){
+                        case 1:
+                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY UserId"));
+                            sheet.addCell(new Label(0, 1, "UserId :" + txtSearch.getText()));
+                            break;
+                        case 2:
+                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY Password"));
+                            sheet.addCell(new Label(0, 1, "Password :" + txtSearch.getText()));
+                            break;
+                        case 3:
+                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY UserName"));
+                            sheet.addCell(new Label(0, 1, "UserName :" + txtSearch.getText()));
+                            break;
+                        case 4:
+                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY Class"));
+                            sheet.addCell(new Label(0, 1, "Class :" + txtSearch.getText()));
+                            break;
+                        case 5:
+                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS"));
+                            break;
+           
+                    }
+                    sheet.addCell(new Label(0, 2, "UserId"));
+                    sheet.addCell(new Label(1, 2, "Password"));
+                    sheet.addCell(new Label(2, 2, "UserName"));
+                    sheet.addCell(new Label(3, 2, "BirthDay"));
+                    sheet.addCell(new Label(4, 2, "Class"));
+                    int rowBegin = 3;
+                    TableModel tableModel = tbUser.getModel();
+                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
+                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
+                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
+                        sheet.addCell(new Label(2, row, (String) tableModel.getValueAt(i, 2)));
+                        SimpleDateFormat sdf = new SimpleDateFormat();
+                        sheet.addCell(new Label(3, row, sdf.format(tableModel.getValueAt(i, 3))));
+                        sheet.addCell(new Label(4, row, (String) tableModel.getValueAt(i, 4)));
+                    }
+                    wb.write();
+                    wb.close();
+                    JOptionPane.showMessageDialog(null, "Save Success");
+                    
+                } catch (WriteException ex) {
+                    Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+        
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnAddFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            jfc.setDialogTitle("Open File");
+            File file = jfc.getSelectedFile();
+                try {
+                Workbook wb = Workbook.getWorkbook(file);
+                Sheet sheet = wb.getSheet(0);
+                int rows = sheet.getRows();
+                int columns = sheet.getColumns();
+                for(int i = 0; i < rows; i++){
+                    User user = new User(sheet.getCell(0, i).getContents(), sheet.getCell(1,i).getContents(),
+                                          sheet.getCell(2, i).getContents(),Date.valueOf(sheet.getCell(3, i).getContents()),
+                                          sheet.getCell(4, i).getContents());
+                    Controller.insertUser(user);
+                }
+                wb.close();
+                btnSearch.doClick();
+                
+                } catch (IOException ex) {
+                    System.out.println("File not found\n" + ex.toString());
+                } catch (BiffException ex) {
+                    ex.printStackTrace();
+                }
+        }
+    }//GEN-LAST:event_btnAddFileActionPerformed
+
+    private void cbUserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbUserItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "UserId"){
+            k = 1;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "Password"){
+            k = 2;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "UserName"){
+            k = 3;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "Class"){
+            k = 4;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "None"){
+            k = 5;
+        }
+    }//GEN-LAST:event_cbUserItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Document document = new Document() {};
+        try {
+            JFileChooser jfc = new JFileChooser("Save File");
+            if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                jfc.setDialogTitle("Save File");
+                FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
+                PdfWriter.getInstance(document, fos);
+                document.open();
+                Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
+                document.add(new Paragraph("\t\t                                                            USERS SEARCH RESULTS\n", rfont));
+                switch(k){
+                        case 1:                           
+                            document.add(new Paragraph("                Search by UserId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;    
+                        case 2:                          
+                            document.add(new Paragraph("                Search by Password : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;    
+                        case 3:                           
+                            document.add(new Paragraph("                Search by UserName : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;                               
+                        case 4:                           
+                            document.add(new Paragraph("                Search by Class :" + txtSearch.getText() + "\n\n", rfont)); 
+                            break;                                                                            
+                    }
+                PdfPTable table = new PdfPTable(5);
+                PdfPCell header1 = new PdfPCell(new Paragraph("UserId", rfont));
+                PdfPCell header2 = new PdfPCell(new Paragraph("Password", rfont));
+                PdfPCell header3 = new PdfPCell(new Paragraph("UserName", rfont));
+                PdfPCell header4 = new PdfPCell(new Paragraph("BirthDay", rfont));
+                PdfPCell header5 = new PdfPCell(new Paragraph("Class", rfont));               
+                table.addCell(header1);
+                table.addCell(header2);
+                table.addCell(header3);
+                table.addCell(header4);
+                table.addCell(header5);
+               
+                TableModel tableModel = tbUser.getModel();
+                for(int i = 0; i < tableModel.getRowCount(); i++){
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 0), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 1), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 2), rfont)));
+                        SimpleDateFormat sdf = new SimpleDateFormat();
+                        table.addCell(new PdfPCell(new Paragraph(sdf.format(tableModel.getValueAt(i, 3)), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 4), rfont)));                                      
+                }  
+                document.add(table);
+                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                Teacher\n", rfont));
+                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+                
+                document.close();
+                JOptionPane.showMessageDialog(null, "Save success");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -225,23 +650,27 @@ public class UpdateUser extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddFile;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnShowAll;
+    private javax.swing.JComboBox<String> cbUser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbUser;
-    private javax.swing.JTextField txtFilterAddress;
     private javax.swing.JTextField txtFilterBirthday;
     private javax.swing.JTextField txtFilterClass;
-    private javax.swing.JTextField txtFilterId;
     private javax.swing.JTextField txtFilterName;
+    private javax.swing.JTextField txtFilterPassword;
+    private javax.swing.JTextField txtFilterUserId;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

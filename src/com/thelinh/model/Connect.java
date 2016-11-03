@@ -14,18 +14,20 @@ import java.sql.DriverManager;
  */
 public class Connect {
 
-    private static Connection conn = null;
+    private static Connection conn;
 
     public static Connection getConnect() {
-        if (conn == null) {
-            try {
-                Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", "postgres", "thelinh96");
-            } catch (Exception ee) {
-                ee.printStackTrace();
-            }
+        try {
+            Class.forName("org.postgresql.Driver");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", "postgres", "1234");
+        } catch (Exception ee) {
+            ee.printStackTrace();
         }
         return conn;
     }
-
+    public static void main(String[] args) {
+        if (Connect.getConnect() == null) {
+            System.out.println("Null");
+        }
+    }
 }

@@ -5,17 +5,58 @@
  */
 package com.thelinh.gui;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.thelinh.controller.Controller;
+import com.thelinh.controller.LoadTable;
+import com.thelinh.model.Subject;
+import java.awt.event.ItemEvent;
+import java.awt.print.Book;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+
 /**
  *
  * @author hoangkien
  */
 public class UpdateSubject extends javax.swing.JFrame {
+    
+    String sql = "SELECT * FROM Subjects ORDER BY SubjectId ASC";
+    private static PreparedStatement ps = null;
+    int k = 1;
 
     /**
      * Creates new form UpdateSubject
      */
     public UpdateSubject() {
         initComponents();
+        LoadTable.loadDataSubject(sql, tbSubject);
     }
 
     /**
@@ -33,24 +74,47 @@ public class UpdateSubject extends javax.swing.JFrame {
         btnExit = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbSubject = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtFilterSubjectCode = new javax.swing.JTextField();
         txtFilterSubjectName = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
-        btnShowAll = new javax.swing.JButton();
         btnExport = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        btnAddFile = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbSubject = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("Thoát");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         tbSubject.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -71,59 +135,103 @@ public class UpdateSubject extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbSubject.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbSubjectMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbSubject);
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Tìm kiếm");
 
         jLabel2.setText("Mã môn học");
 
         jLabel3.setText("Tên môn học");
 
         btnSearch.setText("Tìm kiếm");
-
-        btnShowAll.setText("Hiển thị tất cả");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         btnExport.setText("Xuất biểu mẫu");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
+
+        btnAddFile.setText("Thêm File");
+        btnAddFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddFileActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Tìm kiếm theo");
+
+        cbSubject.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SubjectId", "SubjectName", "None" }));
+        cbSubject.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbSubjectItemStateChanged(evt);
+            }
+        });
+
+        jButton1.setText("PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(btnAdd)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEdit)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnDelete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExport)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExit)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 669, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
+                        .addComponent(btnAdd)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFilterSubjectCode, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAddFile)
+                        .addGap(26, 26, 26)
+                        .addComponent(btnEdit)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnDelete)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnExport)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearch)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnShowAll)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnExit))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtSearch))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(9, 9, 9)))))
+                .addGap(181, 181, 181))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cbSubject, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFilterSubjectCode, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnDelete, btnEdit, btnExit});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFilterSubjectCode, txtFilterSubjectName});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -133,24 +241,282 @@ public class UpdateSubject extends javax.swing.JFrame {
                     .addComponent(btnEdit)
                     .addComponent(btnDelete)
                     .addComponent(btnExit)
-                    .addComponent(btnExport))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
+                    .addComponent(btnExport)
+                    .addComponent(btnAddFile))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(cbSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3)
                     .addComponent(txtFilterSubjectCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSearch)
-                    .addComponent(btnShowAll))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void tbSubjectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbSubjectMouseClicked
+        int row = tbSubject.getSelectedRow();
+        String rowId = (tbSubject.getModel().getValueAt(row, 0)).toString();
+        
+        String sql1 = "SELECT * FROM Subjects WHERE SubjectId = '" + rowId + "'";
+        ResultSet rs = LoadTable.Display(sql1);
+        try {
+            if(rs.next()){
+                txtFilterSubjectCode.setText(rs.getString("SubjectId"));
+                txtFilterSubjectName.setText(rs.getString("SubjectName"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR");
+        }
+        
+    }//GEN-LAST:event_tbSubjectMouseClicked
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String sql1 = "SELECT * FROM Subjects";
+        String sql2 = "SELECT * FROM Subjects WHERE SubjectId LIKE '%" + txtSearch.getText() + "%'";
+        String sql3 = "SELECT * FROM Subjects WHERE SubjectName LIKE '%" + txtSearch.getText() + "%'";
+        switch(k){
+            case 1:
+                LoadTable.loadDataSubject(sql2, tbSubject);
+                break;
+            case 2:
+                LoadTable.loadDataSubject(sql3, tbSubject);
+                break;
+            case 3:
+                LoadTable.loadDataSubject(sql1, tbSubject);
+                break;
+        }                                       
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if(txtFilterSubjectCode.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter SubjectId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterSubjectCode.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "SubjectId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            String sql = "SELECT SubjectId FROM Subjects";
+            ResultSet rs = LoadTable.Display(sql);
+            try {
+                while(rs.next()){
+                    if(rs.getString("SubjectId") == txtFilterSubjectCode.getText()){
+                        JOptionPane.showMessageDialog(null, "This SubjectId already exists", "Notification", JOptionPane.INFORMATION_MESSAGE);
+ 
+                    }
+                        }
+                // xu li chua chuan lam! :(
+                Subject subject = new Subject(txtFilterSubjectCode.getText(), txtFilterSubjectName.getText());
+                Controller.insertSubject(subject);
+                btnSearch.doClick();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "ERROR");
+            }
+        }
+       
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+       System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if(txtFilterSubjectCode.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter SubjectId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterSubjectCode.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "SubjectId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to edit?");
+            if(click == JOptionPane.YES_OPTION){
+                Subject subject = new Subject(txtFilterSubjectCode.getText(), txtFilterSubjectName.getText());
+                if(Controller.updateSubject(subject)){
+                    JOptionPane.showMessageDialog(null, "Edit Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "SubjectId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+                btnSearch.doClick();
+            } 
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(txtFilterSubjectCode.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter SubjectId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtFilterSubjectCode.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "SubjectId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to delete?");
+            if(click == JOptionPane.YES_OPTION){
+                if(Controller.deleteSubject(txtFilterSubjectCode.getText())){
+                    JOptionPane.showMessageDialog(null, "Delete Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "SubjectId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+                }
+                btnSearch.doClick();
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        JFileChooser jfc = new JFileChooser("Save File");
+        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            jfc.setDialogTitle("Save File");
+            File file = jfc.getSelectedFile();
+            WritableWorkbook wb;
+            try {
+                wb = Workbook.createWorkbook(file);
+                WritableSheet sheet = wb.createSheet("Subjects", 0);
+                try {
+                    switch(k){
+                        case 1:
+                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS BY SubjectId"));
+                            sheet.addCell(new Label(0, 1, "SubjectId :" + txtSearch.getText()));
+                            break;
+                        case 2:
+                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS BY SubjectName"));
+                            sheet.addCell(new Label(0, 1, "SubjectName :" + txtSearch.getText()));
+                            break;
+                        case 3:
+                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS"));
+                            break;
+           
+                    }
+                    sheet.addCell(new Label(0, 2, "SubjectId"));
+                    sheet.addCell(new Label(1, 2, "SubjectName"));
+                    int rowBegin = 3;
+                    TableModel tableModel = tbSubject.getModel();
+                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
+                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
+                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
+                    }
+                    wb.write();
+                    wb.close();
+                    JOptionPane.showMessageDialog(null, "Save Success");
+                    
+                } catch (WriteException ex) {
+                    Logger.getLogger(UpdateSubject.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(UpdateSubject.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+        
+        
+        
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnAddFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            jfc.setDialogTitle("Open File");
+            File file = jfc.getSelectedFile();
+                try {
+                Workbook wb = Workbook.getWorkbook(file);
+                Sheet sheet = wb.getSheet(0);
+                int rows = sheet.getRows();
+                int columns = sheet.getColumns();
+                for(int i = 0; i < rows; i++){
+                    Subject subject = new Subject(sheet.getCell(0, i).getContents(), sheet.getCell(1,i).getContents());
+                    Controller.insertSubject(subject);
+                }
+                wb.close();
+                btnSearch.doClick();
+                
+                } catch (IOException ex) {
+                    System.out.println("File not found\n" + ex.toString());
+                } catch (BiffException ex) {
+                    ex.printStackTrace();
+                }
+        }
+        
+    }//GEN-LAST:event_btnAddFileActionPerformed
+
+    private void cbSubjectItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbSubjectItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "SubjectId"){
+            k = 1;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "SubjectName"){
+            k = 2;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "None"){
+            k = 3;
+        }
+    }//GEN-LAST:event_cbSubjectItemStateChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Document document = new Document() {};
+        try {
+            JFileChooser jfc = new JFileChooser("Save File");
+            if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                jfc.setDialogTitle("Save File");
+                FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
+                PdfWriter.getInstance(document, fos);
+                document.open();
+                Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
+                document.add(new Paragraph("\t\t                                                            SUBJECTS SEARCH RESULTS\n", rfont));
+                switch(k){
+                        case 1:                           
+                            document.add(new Paragraph("                Search by SubjectId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;    
+                        case 2:                          
+                            document.add(new Paragraph("                Search by SubjectName : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;                                                     
+                    }
+                PdfPTable table = new PdfPTable(2);
+                PdfPCell header1 = new PdfPCell(new Paragraph("SubjectId", rfont));
+                PdfPCell header2 = new PdfPCell(new Paragraph("SubjectName", rfont));
+                
+                table.addCell(header1);
+                table.addCell(header2);
+                
+             
+                TableModel tableModel = tbSubject.getModel();
+                for(int i = 0; i < tableModel.getRowCount(); i++){
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 0), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 1), rfont)));
+                                                           
+                }  
+                document.add(table);
+                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                Teacher\n", rfont));
+                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+                
+                document.close();
+                JOptionPane.showMessageDialog(null, "Save success");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
     /**
      * @param args the command line arguments
      */
@@ -188,12 +554,14 @@ public class UpdateSubject extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddFile;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnShowAll;
+    private javax.swing.JComboBox<String> cbSubject;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -201,5 +569,6 @@ public class UpdateSubject extends javax.swing.JFrame {
     private javax.swing.JTable tbSubject;
     private javax.swing.JTextField txtFilterSubjectCode;
     private javax.swing.JTextField txtFilterSubjectName;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,12 +16,14 @@ public class User {
     private String password;
     private String userName;
     private Date birthDay;
+    private String classs;
 
-    public User(String userId, String password, String userName, Date birthDay) {
+    public User(String userId, String password, String userName, Date birthDay,String classs) {
         this.userId = userId;
         this.password = password;
         this.userName = userName;
         this.birthDay = birthDay;
+        this.classs = classs;
     }
 
     public String getUserId() {
@@ -55,6 +57,15 @@ public class User {
     public void setBirthDay(Date birthDay) {
         this.birthDay = birthDay;
     }
+
+    public String getClasss() {
+        return classs;
+    }
+
+    public void setClasss(String classs) {
+        this.classs = classs;
+    }
+    
     
     
     

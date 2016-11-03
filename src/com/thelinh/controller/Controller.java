@@ -29,7 +29,7 @@ import java.sql.Date;
  */
 public class Controller {
     //Amin
-    public Admin signIn(String adminId,String password){
+    public static Admin signIn(String adminId,String password){
         return AdminSql.signIn(adminId, password);
     }
     
@@ -112,7 +112,7 @@ public class Controller {
      }
      
      //User
-     public User signInUser(String userId, String password){
+     public static User signInUser(String userId, String password){
          return UserSql.signIn(userId, password);
      }
      

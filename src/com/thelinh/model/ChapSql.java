@@ -32,7 +32,7 @@ public class ChapSql {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Add Successful", "Notification", JOptionPane.INFORMATION_MESSAGE);
             
-        } catch (SQLException ex) {
+        } catch (SQLException ex) {          
             JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         
