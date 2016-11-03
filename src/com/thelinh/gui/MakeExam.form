@@ -41,7 +41,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jComboBox1" alignment="0" pref="152" max="32767" attributes="0"/>
+                          <Component id="jComboBox1" alignment="0" pref="302" max="32767" attributes="0"/>
                           <Component id="jSpinner1" max="32767" attributes="0"/>
                           <Component id="jSpinner2" alignment="0" max="32767" attributes="0"/>
                           <Component id="jSpinner3" alignment="0" max="32767" attributes="0"/>

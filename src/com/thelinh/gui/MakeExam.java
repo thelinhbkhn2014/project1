@@ -74,7 +74,7 @@ public class MakeExam extends javax.swing.JFrame {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBox1, 0, 152, Short.MAX_VALUE)
+                            .addComponent(jComboBox1, 0, 302, Short.MAX_VALUE)
                             .addComponent(jSpinner1)
                             .addComponent(jSpinner2)
                             .addComponent(jSpinner3))))

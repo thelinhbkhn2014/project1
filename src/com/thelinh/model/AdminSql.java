@@ -5,7 +5,7 @@
  */
 package com.thelinh.model;
 
-import com.thelinh.controller.Admin;
+import com.thelinh.model.Admin;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

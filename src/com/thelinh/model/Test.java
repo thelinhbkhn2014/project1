@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.thelinh.controller;
+package com.thelinh.model;
 
 import java.sql.Date;
 
@@ -18,7 +18,8 @@ public class Test {
     private String adminId;
     private String questionId;
 
-    public Test(String testId, String subjectId, Date testDay, String adminId, String questionId) {
+    public Test(String testId, String subjectId, Date testDay, String adminId,
+            String questionId) {
         this.testId = testId;
         this.subjectId = subjectId;
         this.testDay = testDay;
@@ -64,8 +65,5 @@ public class Test {
 
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
-    }
-    
-    
-            
+    }           
 }

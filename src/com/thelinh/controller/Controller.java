@@ -5,13 +5,21 @@
  */
 package com.thelinh.controller;
 
+import com.thelinh.model.Admin;
 import com.thelinh.model.AdminSql;
+import com.thelinh.model.Answer;
 import com.thelinh.model.AnswerSql;
+import com.thelinh.model.Chap;
 import com.thelinh.model.ChapSql;
+import com.thelinh.model.Question;
 import com.thelinh.model.QuestionSql;
+import com.thelinh.model.Result;
 import com.thelinh.model.ResultSql;
+import com.thelinh.model.Subject;
 import com.thelinh.model.SubjectSql;
+import com.thelinh.model.Test;
 import com.thelinh.model.TestSql;
+import com.thelinh.model.User;
 import com.thelinh.model.UserSql;
 import java.sql.Date;
 

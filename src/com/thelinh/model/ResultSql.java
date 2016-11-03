@@ -5,7 +5,7 @@
  */
 package com.thelinh.model;
 
-import com.thelinh.controller.Result;
+import com.thelinh.model.Result;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
