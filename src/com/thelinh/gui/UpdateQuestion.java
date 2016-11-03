@@ -5,17 +5,56 @@
  */
 package com.thelinh.gui;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.FontFactory;
+import com.itextpdf.text.Paragraph;
+import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.thelinh.model.Answer;
+import com.thelinh.controller.Controller;
+import com.thelinh.controller.LoadTable;
+import com.thelinh.model.Question;
+import java.awt.event.ItemEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
+import jxl.Sheet;
+import jxl.Workbook;
+import jxl.read.biff.BiffException;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+import jxl.write.WriteException;
+
 /**
  *
- * @author hoangkien
+ * @author Admin
  */
 public class UpdateQuestion extends javax.swing.JFrame {
 
+    int k = 1, q = 1;
+    String sql = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId";
+    String sqlQuestion = "SELECT * FROM Questions";
     /**
-     * Creates new form UpdateSubject
+     * Creates new form UpdateQuestion
      */
     public UpdateQuestion() {
         initComponents();
+        LoadTable.loadDataQuestion(sql, tbQuestion);
+        LoadTable.loadDataQuestions(sqlQuestion, tbQuestions);
     }
 
     /**
@@ -27,75 +66,204 @@ public class UpdateQuestion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAdd = new javax.swing.JButton();
-        btnEdit = new javax.swing.JButton();
-        btnDelete = new javax.swing.JButton();
-        btnSearch = new javax.swing.JButton();
-        btnExport = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbQuestion = new javax.swing.JTable();
-        btnExit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        txtFilterCode = new javax.swing.JTextField();
-        txtFilterChapter = new javax.swing.JTextField();
-        txtFilterContent = new javax.swing.JTextField();
-        cbFilterSubject = new javax.swing.JComboBox<>();
-        btnShowAll = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtQuestionId = new javax.swing.JTextField();
+        txtQuestionContent = new javax.swing.JTextField();
+        txtLevel = new javax.swing.JTextField();
+        txtSubjectId = new javax.swing.JTextField();
+        txtChapter = new javax.swing.JTextField();
+        txtAnswer = new javax.swing.JTextField();
+        txtAnswerContent = new javax.swing.JTextField();
+        txtCorrect = new javax.swing.JTextField();
+        btnAdd = new javax.swing.JButton();
+        btnAddFile = new javax.swing.JButton();
+        btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnPrintFile = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        cbQuestion = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbQuestion = new javax.swing.JTable();
+        jLabel11 = new javax.swing.JLabel();
+        btnAddQuestion = new javax.swing.JButton();
+        btnEditQuestion = new javax.swing.JButton();
+        btnDeleteQuestion = new javax.swing.JButton();
+        btnSearchQuestion = new javax.swing.JButton();
+        txtSearchQuestion = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        tbQuestions = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
+        cbQuestions = new javax.swing.JComboBox<>();
+        btnAddFileQuestion = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setText("Mã câu hỏi");
+
+        jLabel2.setText("Nội dung câu hỏi");
+
+        jLabel3.setText("Độ khó");
+
+        jLabel4.setText("Mã môn học");
+
+        jLabel5.setText("Chương số:");
+
+        jLabel6.setText("Đáp án số :");
+
+        jLabel7.setText("Nội dung đáp án");
+
+        jLabel9.setText("Đúng sai");
+
         btnAdd.setText("Thêm");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        btnAddFile.setText("Thêm file");
+        btnAddFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddFileActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Sửa");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnPrintFile.setText("Xuất file");
+        btnPrintFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPrintFileActionPerformed(evt);
+            }
+        });
 
         btnSearch.setText("Tìm kiếm");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
-        btnExport.setText("Xuất biểu mẫu");
+        jLabel10.setText("Tìm kiếm theo");
+
+        cbQuestion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "QuestionId", "QuestionContent", "Level", "SubjectId", "Answers", "None", " " }));
+        cbQuestion.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbQuestionItemStateChanged(evt);
+            }
+        });
 
         tbQuestion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Mã câu hỏi", "Môn học", "Chương", "Nội dung", "Các đáp án"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbQuestion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbQuestionMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbQuestion);
 
-        btnExit.setText("Thoát");
+        jLabel11.setText("Thêm đáp án cho câu hỏi");
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jLabel1.setText("Tìm kiếm");
+        btnAddQuestion.setText("Thêm");
+        btnAddQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddQuestionActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Mã câu hỏi");
+        btnEditQuestion.setText("Sửa");
+        btnEditQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditQuestionActionPerformed(evt);
+            }
+        });
 
-        jLabel3.setText("Môn học");
+        btnDeleteQuestion.setText("Xóa");
+        btnDeleteQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteQuestionActionPerformed(evt);
+            }
+        });
 
-        jLabel4.setText("Chương");
+        btnSearchQuestion.setText("Tìm kiếm");
+        btnSearchQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchQuestionActionPerformed(evt);
+            }
+        });
 
-        jLabel5.setText("Nội dung");
+        tbQuestions.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tbQuestions.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbQuestionsMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(tbQuestions);
 
-        jLabel6.setText("Các đáp án");
+        jLabel12.setText("Tìm kiếm theo");
 
-        cbFilterSubject.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbQuestions.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "QuestionId", "QuestionContent", "Level", "SubjectId", "None", " " }));
+        cbQuestions.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbQuestionsItemStateChanged(evt);
+            }
+        });
 
-        btnShowAll.setText("Hiển thị tất cả");
+        btnAddFileQuestion.setText("Thêm file");
+        btnAddFileQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddFileQuestionActionPerformed(evt);
+            }
+        });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane2.setViewportView(jTextArea1);
+        jButton1.setText("PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -104,95 +272,644 @@ public class UpdateQuestion extends javax.swing.JFrame {
             .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel7)
+                    .addComponent(btnSearch)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel10)
+                    .addComponent(btnAdd)
+                    .addComponent(jLabel9)
+                    .addComponent(btnAddQuestion))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnAdd)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEdit)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDelete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExport)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnExit))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCorrect, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtAnswerContent, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtChapter, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addComponent(jLabel2))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addContainerGap()
-                                        .addComponent(jLabel3)))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbFilterSubject, 0, 164, Short.MAX_VALUE)
-                                    .addComponent(txtFilterCode))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtFilterContent, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txtFilterChapter, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jLabel6))))
+                                .addComponent(btnAddFile)
+                                .addGap(54, 54, 54)
+                                .addComponent(btnEdit)
+                                .addGap(49, 49, 49)
+                                .addComponent(btnDelete)
+                                .addGap(46, 46, 46)
+                                .addComponent(btnPrintFile)
+                                .addGap(42, 42, 42)
+                                .addComponent(jButton1))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(btnShowAll)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addGap(27, 27, 27)
+                                .addComponent(jLabel11))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(txtSubjectId)
+                                                    .addGroup(layout.createSequentialGroup()
+                                                        .addComponent(txtAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(btnAddFileQuestion)
+                                                .addGap(29, 29, 29)
+                                                .addComponent(btnEditQuestion)
+                                                .addGap(32, 32, 32)))
+                                        .addComponent(btnDeleteQuestion))
+                                    .addComponent(txtQuestionId)
+                                    .addComponent(txtLevel)
+                                    .addComponent(txtQuestionContent))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(74, 74, 74)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(jLabel12)
+                                                .addGap(52, 52, 52)
+                                                .addComponent(cbQuestions, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 331, Short.MAX_VALUE)
+                                                .addComponent(txtSearchQuestion))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(197, 197, 197)
+                                        .addComponent(btnSearchQuestion)))))
+                        .addContainerGap(50, Short.MAX_VALUE))))
         );
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnDelete, btnEdit, btnExit});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {cbFilterSubject, txtFilterChapter, txtFilterCode, txtFilterContent});
-
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel1)
+                                .addComponent(txtQuestionId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnSearchQuestion))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel2)
+                                .addComponent(txtQuestionContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txtSearchQuestion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel3)
+                                    .addComponent(txtLevel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(txtSubjectId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addGap(40, 40, 40)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(btnAddQuestion)
+                                    .addComponent(btnEditQuestion)
+                                    .addComponent(btnDeleteQuestion)
+                                    .addComponent(btnAddFileQuestion)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel12)
+                                    .addComponent(cbQuestions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(28, 28, 28))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtChapter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(86, 86, 86)))
+                .addComponent(jLabel11)
+                .addGap(11, 11, 11)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6))
+                    .addComponent(txtAnswer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtAnswerContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtCorrect, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAdd)
+                    .addComponent(btnAddFile)
                     .addComponent(btnEdit)
                     .addComponent(btnDelete)
-                    .addComponent(btnExport)
-                    .addComponent(btnExit))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6)
-                            .addComponent(txtFilterCode, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtFilterChapter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(txtFilterContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbFilterSubject, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnSearch)
-                            .addComponent(btnShowAll)))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnPrintFile)
+                    .addComponent(jButton1))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSearch)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10)
+                    .addComponent(cbQuestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 179, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void tbQuestionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbQuestionMouseClicked
+        int row = tbQuestion.getSelectedRow();
+        String rowId = (tbQuestion.getModel().getValueAt(row, 0)).toString();
+        String rowId1 = (tbQuestion.getModel().getValueAt(row, 5)).toString();
+        
+        String sql1 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionID AND Question.QuestionId = '" + rowId + "' AND Answers.Number = " + rowId1;
+        ResultSet rs = LoadTable.Display(sql1);
+        try {
+            if(rs.next()){
+                txtQuestionId.setText(rs.getString("QuestionId"));
+                txtQuestionContent.setText(rs.getString("Question"));
+                txtLevel.setText(rs.getString("Levels"));
+                txtSubjectId.setText(rs.getString("SubjectId"));
+                txtChapter.setText(rs.getString("Chapter"));
+                txtAnswer.setText(rs.getString("Number"));
+                txtAnswerContent.setText(rs.getString("Answer"));
+                txtCorrect.setText(rs.getString("YesNo"));
+                
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR");
+        }
+    }//GEN-LAST:event_tbQuestionMouseClicked
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        String sql1 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId";
+        String sql2 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId AND Questions.QuestionId LIKE '%" + txtSearch.getText() + "%'";
+        String sql3 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId AND Questions.Question LIKE '%" + txtSearch.getText() + "%'";
+        String sql4 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId AND Questions.Levels LIKE '%" + txtSearch.getText() + "%'"; 
+        String sql5 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId AND Questions.SubjectId LIKE '%" + txtSearch.getText() + "%'"; 
+        String sql6 = "SELECT Questions.*, Answers.Number, Answers.Answer,Answers.YesNo FROM Questions,Answers WHERE Questions.QuestionId = Answers.QuestionId AND Answers.Answer LIKE '%" + txtSearch.getText() + "%'";
+      
+        
+        switch(q){
+            case 1:
+                LoadTable.loadDataQuestion(sql2, tbQuestion);
+                break;
+            case 2:
+                LoadTable.loadDataQuestion(sql3, tbQuestion);
+                break;
+            case 3:
+                LoadTable.loadDataQuestion(sql4, tbQuestion);
+                break;
+            case 4:
+                LoadTable.loadDataQuestion(sql5, tbQuestion);
+                break;
+            case 5:
+                LoadTable.loadDataQuestions(sql6, tbQuestion);
+                break;
+            case 6:
+                LoadTable.loadDataQuestion(sql1, tbQuestion);
+                break;
+            
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            Answer answer = new Answer(txtQuestionId.getText(), txtAnswerContent.getText(), Boolean.parseBoolean(txtCorrect.getText()), Integer.parseInt(txtAnswer.getText()));
+            Controller.insertAnswer(answer);
+            btnSearch.doClick();
+        }
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void tbQuestionsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbQuestionsMouseClicked
+        int row = tbQuestions.getSelectedRow();
+        String rowId = (tbQuestions.getModel().getValueAt(row, 0)).toString();
+        
+        String sql1 = "SELECT * FROM Questions WHERE QuestionId = '" + rowId + "'";
+        ResultSet rs = LoadTable.Display(sql1);
+        try {
+            if(rs.next()){
+                txtQuestionId.setText(rs.getString("QuestionId"));
+                txtQuestionContent.setText(rs.getString("Question"));
+                txtLevel.setText(rs.getString("Levels"));
+                txtSubjectId.setText(rs.getString("SubjectId"));
+                txtChapter.setText(rs.getString("Chapter"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "ERROR");
+        }
+    }//GEN-LAST:event_tbQuestionsMouseClicked
+
+    private void cbQuestionsItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbQuestionsItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "QuestionId"){
+            k = 1;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "QuestionContent"){
+            k = 2;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "Level"){
+            k = 3;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "SubjectId"){
+            k = 4;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "None"){
+            k = 5;
+        }
+    }//GEN-LAST:event_cbQuestionsItemStateChanged
+
+    private void btnAddQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddQuestionActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            String sql = "SELECT QuestionId FROM Questions";
+            ResultSet rs = LoadTable.Display(sql);
+            try {
+                while(rs.next()){
+                    if(rs.getString("QuestionId") == txtQuestionId.getText()){
+                        JOptionPane.showMessageDialog(null, "This QuestionId already exists", "Notification", JOptionPane.INFORMATION_MESSAGE);
+ 
+                    }
+                        }
+                // xu li chua chuan lam! :(
+                Question question = new Question(txtQuestionId.getText(), txtQuestionContent.getText(), txtLevel.getText(), txtSubjectId.getText(), Integer.parseInt(txtChapter.getText()));
+                Controller.insertQuestion(question);
+                btnSearchQuestion.doClick();
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "ERROR");
+            }
+        }
+    }//GEN-LAST:event_btnAddQuestionActionPerformed
+
+    private void btnSearchQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchQuestionActionPerformed
+
+        String sql1 = "SELECT * FROM Questions";
+        String sql2 = "SELECT * FROM Questions WHERE QuestionId LIKE '%" + txtSearchQuestion.getText() + "%'";
+        String sql3 = "SELECT * FROM Questions WHERE Question LIKE '%" + txtSearchQuestion.getText() + "%'";
+        String sql4 = "SELECT * FROM Questions WHERE Levels LIKE '%" + txtSearchQuestion.getText() + "%'"; 
+        String sql5 = "SELECT * FROM Questions WHERE SubjectId LIKE '%" + txtSearchQuestion.getText() + "%'"; 
+        
+      
+        
+        switch(k){
+            case 1:
+                LoadTable.loadDataQuestions(sql2, tbQuestions);
+                break;
+            case 2:
+                LoadTable.loadDataQuestions(sql3, tbQuestions);
+                break;
+            case 3:
+                LoadTable.loadDataQuestions(sql4, tbQuestions);
+                break;
+            case 4:
+                LoadTable.loadDataQuestions(sql5, tbQuestions);
+                break;
+             case 5:
+                LoadTable.loadDataQuestions(sql1, tbQuestions);
+                break;
+            
+        }
+    }//GEN-LAST:event_btnSearchQuestionActionPerformed
+
+    private void btnEditQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditQuestionActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to edit?");
+            if(click == JOptionPane.YES_OPTION){
+                Question question = new Question(txtQuestionId.getText(), txtQuestionContent.getText(), txtLevel.getText(), txtSubjectId.getText(), Integer.parseInt(txtChapter.getText()));
+                if(Controller.updateQuestion(question)){
+                    JOptionPane.showMessageDialog(null, "Edit Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            btnSearchQuestion.doClick();
+            
+        }
+    }//GEN-LAST:event_btnEditQuestionActionPerformed
+
+    private void btnAddFileQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileQuestionActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            jfc.setDialogTitle("Open File");
+            File file = jfc.getSelectedFile();
+                try {
+                    Workbook wb = Workbook.getWorkbook(file);
+                    Sheet sheet = wb.getSheet(0);
+                    int rows = sheet.getRows();
+                    int columns = sheet.getColumns();
+                    for(int i = 0; i < rows; i++){
+                        Question question = new Question(sheet.getCell(0, i).getContents(), sheet.getCell(1, i).getContents(), 
+                                                   sheet.getCell(2, i).getContents(),
+                                                   sheet.getCell(3, i).getContents(), 
+                                                   Integer.parseInt(sheet.getCell(4, i).getContents()));
+                        Controller.insertQuestion(question);
+                   
+                    }
+                    wb.close();
+                    btnSearchQuestion.doClick();
+ 
+                } catch (IOException ex) {
+                    System.out.println("File not found\n" + ex.toString());
+                } catch (BiffException ex) {
+                    ex.printStackTrace();
+                }
+        }
+    }//GEN-LAST:event_btnAddFileQuestionActionPerformed
+
+    private void btnDeleteQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteQuestionActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to delete?");
+            if(click == JOptionPane.YES_OPTION){
+            if(Controller.deleteQuestion(txtQuestionId.getText())){
+                JOptionPane.showMessageDialog(null, "Delete Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "QuestionId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+            btnSearchQuestion.doClick();
+             }
+        }
+    }//GEN-LAST:event_btnDeleteQuestionActionPerformed
+
+    private void cbQuestionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbQuestionItemStateChanged
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "QuestionId"){
+            q = 1;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "QuestionContent"){
+            q = 2;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "Level"){
+            q = 3;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "SubjectId"){
+            q = 4;
+        }
+         if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "Answer"){
+            q = 5;
+        }
+        if(evt.getStateChange() == ItemEvent.SELECTED && evt.getItem().toString() == "None"){
+            q = 6;
+        }
+    }//GEN-LAST:event_cbQuestionItemStateChanged
+
+    private void btnAddFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileActionPerformed
+        JFileChooser jfc = new JFileChooser();
+        if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
+            jfc.setDialogTitle("Open File");
+            File file = jfc.getSelectedFile();
+                try {
+                    Workbook wb = Workbook.getWorkbook(file);
+                    Sheet sheet = wb.getSheet(0);
+                    int rows = sheet.getRows();
+                    int columns = sheet.getColumns();
+                    for(int i = 0; i < rows; i++){
+                        Answer answer = new Answer(sheet.getCell(0, i).getContents(), sheet.getCell(1, i).getContents(), 
+                                                   Boolean.parseBoolean(sheet.getCell(2, i).getContents()),                                               
+                                                   Integer.parseInt(sheet.getCell(3, i).getContents()));
+                        Controller.insertAnswer(answer);
+                   
+                    }
+                    wb.close();
+                    btnSearch.doClick();
+ 
+                } catch (IOException ex) {
+                    System.out.println("File not found\n" + ex.toString());
+                } catch (BiffException ex) {
+                    ex.printStackTrace();
+                }
+        }
+    }//GEN-LAST:event_btnAddFileActionPerformed
+
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to edit?");
+            if(click == JOptionPane.YES_OPTION){
+                Answer answer = new Answer(txtQuestionId.getText(), txtAnswerContent.getText(), Boolean.parseBoolean(txtCorrect.getText()), Integer.parseInt(txtAnswer.getText()));
+                if(Controller.updateAnswer(answer)){
+                    JOptionPane.showMessageDialog(null, "Edit Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+            btnSearch.doClick();
+            
+        }
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        if(txtQuestionId.getText().length() == 0){
+            JOptionPane.showMessageDialog(null, "You have to enter QuestionId", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else if(txtQuestionId.getText().length() > 10){
+            JOptionPane.showMessageDialog(null, "QuestionId have to less more than 10 characters", "Notification", JOptionPane.INFORMATION_MESSAGE);
+        }
+        else{
+            int click = JOptionPane.showConfirmDialog(null, "Do you want to delete?");
+            if(click == JOptionPane.YES_OPTION){
+            if(Controller.deleteAnswer(txtQuestionId.getText(), Integer.parseInt(txtAnswer.getText()))){
+                JOptionPane.showMessageDialog(null, "Delete Success", "Notification", JOptionPane.INFORMATION_MESSAGE);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "QuestionId does not exist", "ERROR",JOptionPane.ERROR_MESSAGE);
+            }
+            btnSearchQuestion.doClick();
+             }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnPrintFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintFileActionPerformed
+        JFileChooser jfc = new JFileChooser("Save File");
+        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            jfc.setDialogTitle("Save File");
+            File file = jfc.getSelectedFile();
+            WritableWorkbook wb;
+            try {
+                wb = Workbook.createWorkbook(file);
+                WritableSheet sheet = wb.createSheet("Questions", 0);
+                try {
+                    switch(q){
+                        case 1:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY QuestionId"));
+                            sheet.addCell(new Label(0, 1, "QuestionId :" + txtSearch.getText()));
+                            break;
+                        case 2:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY QuestionContent"));
+                            sheet.addCell(new Label(0, 1, "QuestionContent :" + txtSearch.getText()));
+                            break;
+                        case 3:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY Level"));
+                            sheet.addCell(new Label(0, 1, "Level :" + txtSearch.getText()));
+                            break;
+                        case 4:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY SubjectId"));
+                            sheet.addCell(new Label(0, 1, "SubjectId :" + txtSearch.getText()));
+                            break;
+                        case 5:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY Answer"));
+                            sheet.addCell(new Label(0, 1, "Answer :" + txtSearch.getText()));
+                            break;
+                        case 6:
+                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS"));
+                            break;
+                    }
+                    sheet.addCell(new Label(0, 2, "QuestionId"));
+                    sheet.addCell(new Label(1, 2, "QuestionContent"));
+                    sheet.addCell(new Label(2, 2, "Level"));
+                    sheet.addCell(new Label(3, 2, "SubjectId"));
+                    sheet.addCell(new Label(4, 2, "Chapter"));
+                    sheet.addCell(new Label(5, 2, "Number"));
+                    sheet.addCell(new Label(6, 2, "Answer"));
+                    sheet.addCell(new Label(7, 2, "YesNo"));
+                    
+                    
+                    int rowBegin = 3;
+                    TableModel tableModel = tbQuestion.getModel();
+                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
+                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
+                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
+                        sheet.addCell(new Label(2, row, (String) tableModel.getValueAt(i, 2)));
+                        sheet.addCell(new Label(3, row, (String) tableModel.getValueAt(i, 3)));
+                        sheet.addCell(new Label(4, row, String.valueOf(tableModel.getValueAt(i, 4))));
+                        sheet.addCell(new Label(5, row, String.valueOf(tableModel.getValueAt(i, 5))));
+                        sheet.addCell(new Label(6, row, (String) tableModel.getValueAt(i, 6)));
+                        sheet.addCell(new Label(7, row, String.valueOf(tableModel.getValueAt(i, 7))));
+                        
+                    }
+                    wb.write();
+                    wb.close();
+                    JOptionPane.showMessageDialog(null, "Save Success");
+                    
+                } catch (WriteException ex) {
+                    Logger.getLogger(UpdateQuestion.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(UpdateQuestion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            
+        }
+    }//GEN-LAST:event_btnPrintFileActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Document document = new Document() {};
+        try {
+            JFileChooser jfc = new JFileChooser("Save File");
+            if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                jfc.setDialogTitle("Save File");
+                FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
+                PdfWriter.getInstance(document, fos);
+                document.open();
+                Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
+                document.add(new Paragraph("\t\t                                                            QUESTIONS SEARCH RESULTS\n", rfont));
+                switch(k){
+                        case 1:                           
+                            document.add(new Paragraph("                Search by QuestionId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;    
+                        case 2:                          
+                            document.add(new Paragraph("                Search by QuestionContent : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;   
+                        case 3:                          
+                            document.add(new Paragraph("                Search by Level : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;
+                        case 4:                          
+                            document.add(new Paragraph("                Search by SubjectId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;
+                        case 5:                          
+                            document.add(new Paragraph("                Search by Answer : " + txtSearch.getText() + "\n\n", rfont)); 
+                            break;
+                    }
+                PdfPTable table = new PdfPTable(8);
+                PdfPCell header1 = new PdfPCell(new Paragraph("QuestionId", rfont));
+                PdfPCell header2 = new PdfPCell(new Paragraph("Question", rfont));
+                PdfPCell header3 = new PdfPCell(new Paragraph("Level", rfont));
+                PdfPCell header4 = new PdfPCell(new Paragraph("SubjectId", rfont));
+                PdfPCell header5 = new PdfPCell(new Paragraph("Chapter", rfont));
+                PdfPCell header6 = new PdfPCell(new Paragraph("AnswerNumber", rfont));
+                PdfPCell header7 = new PdfPCell(new Paragraph("Answer", rfont));
+                PdfPCell header8 = new PdfPCell(new Paragraph("Correct", rfont));
+                
+                table.addCell(header1);
+                table.addCell(header2);
+                table.addCell(header3);
+                table.addCell(header4);
+                table.addCell(header5);
+                table.addCell(header6);
+                table.addCell(header7);
+                table.addCell(header8);
+                
+             
+                TableModel tableModel = tbQuestion.getModel();
+                for(int i = 0; i < tableModel.getRowCount(); i++){
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 0), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 1), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 2), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 3), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 4)), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 5)), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 6), rfont)));
+                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 7)), rfont)));
+                                                           
+                }  
+                document.add(table);
+                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                Teacher\n", rfont));
+                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+                
+                document.close();
+                JOptionPane.showMessageDialog(null, "Save success");
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DocumentException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -220,7 +937,6 @@ public class UpdateQuestion extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(UpdateQuestion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -232,25 +948,44 @@ public class UpdateQuestion extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnAddFile;
+    private javax.swing.JButton btnAddFileQuestion;
+    private javax.swing.JButton btnAddQuestion;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnDeleteQuestion;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnExport;
+    private javax.swing.JButton btnEditQuestion;
+    private javax.swing.JButton btnPrintFile;
     private javax.swing.JButton btnSearch;
-    private javax.swing.JButton btnShowAll;
-    private javax.swing.JComboBox<String> cbFilterSubject;
+    private javax.swing.JButton btnSearchQuestion;
+    private javax.swing.JComboBox<String> cbQuestion;
+    private javax.swing.JComboBox<String> cbQuestions;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTable tbQuestion;
-    private javax.swing.JTextField txtFilterChapter;
-    private javax.swing.JTextField txtFilterCode;
-    private javax.swing.JTextField txtFilterContent;
+    private javax.swing.JTable tbQuestions;
+    private javax.swing.JTextField txtAnswer;
+    private javax.swing.JTextField txtAnswerContent;
+    private javax.swing.JTextField txtChapter;
+    private javax.swing.JTextField txtCorrect;
+    private javax.swing.JTextField txtLevel;
+    private javax.swing.JTextField txtQuestionContent;
+    private javax.swing.JTextField txtQuestionId;
+    private javax.swing.JTextField txtSearch;
+    private javax.swing.JTextField txtSearchQuestion;
+    private javax.swing.JTextField txtSubjectId;
     // End of variables declaration//GEN-END:variables
 }

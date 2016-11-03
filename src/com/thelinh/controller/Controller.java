@@ -5,6 +5,14 @@
  */
 package com.thelinh.controller;
 
+import com.thelinh.model.User;
+import com.thelinh.model.Question;
+import com.thelinh.model.Result;
+import com.thelinh.model.Test;
+import com.thelinh.model.Subject;
+import com.thelinh.model.Answer;
+import com.thelinh.model.Chap;
+import com.thelinh.model.Admin;
 import com.thelinh.model.AdminSql;
 import com.thelinh.model.AnswerSql;
 import com.thelinh.model.ChapSql;
@@ -21,7 +29,7 @@ import java.sql.Date;
  */
 public class Controller {
     //Amin
-    public Admin signIn(String adminId,String password){
+    public static Admin signIn(String adminId,String password){
         return AdminSql.signIn(adminId, password);
     }
     
@@ -104,7 +112,7 @@ public class Controller {
      }
      
      //User
-     public User signInUser(String userId, String password){
+     public static User signInUser(String userId, String password){
          return UserSql.signIn(userId, password);
      }
      

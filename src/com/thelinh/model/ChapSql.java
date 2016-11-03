@@ -5,7 +5,6 @@
  */
 package com.thelinh.model;
 
-import com.thelinh.controller.Chap;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -32,7 +31,7 @@ public class ChapSql {
             ps.executeUpdate();
             JOptionPane.showMessageDialog(null, "Add Successful", "Notification", JOptionPane.INFORMATION_MESSAGE);
             
-        } catch (SQLException ex) {
+        } catch (SQLException ex) {          
             JOptionPane.showMessageDialog(null, "ERROR: Unsuccessful", "ERROR", JOptionPane.ERROR_MESSAGE);
         }
         
