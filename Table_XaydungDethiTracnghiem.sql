@@ -77,6 +77,12 @@ create table exams (examId serial NOT NULL PRIMARY KEY  ,
 CREATE TABLE examElem(examElemId serial NOT NULL PRIMARY KEY, 
 	examId INT NOT NULL, questionId char(10) NOT NULL);
 
-ALTER TABLE exams ADD CONSTRAINT fk_subject FOREIGN KEY (subjectId) REFERENCES subjects(subjectid);
-ALTER TABLE examElem ADD CONSTRAINT fk_exam FOREIGN KEY (examId) REFERENCES exams(examId);
-ALTER TABLE examElem ADD CONSTRAINT fk_question FOREIGN KEY (questionId) REFERENCES questions(questionId);
+ALTER TABLE exams ADD CONSTRAINT fk_subject FOREIGN KEY (subjectId) REFERENCES subjects(subjectid) ON DELETE CASCADE;
+ALTER TABLE examElem ADD CONSTRAINT fk_exam FOREIGN KEY (examId) REFERENCES exams(examId) ON DELETE CASCADE;
+ALTER TABLE examElem ADD CONSTRAINT fk_question FOREIGN KEY (questionId) REFERENCES questions(questionId) ON DELETE CASCADE;
+
+
+CREATE TABLE results (resultid serial NOT NULL, userid CHARACTER(10) NOT NULL, examid INT NOT NULL, result REAL NOT NULL, date DATE NOT NULL);
+ALTER TABLE results ADD CONSTRAINT fk_User FOREIGN KEY (userid) REFERENCES users(userid) ON DELETE CASCADE;
+ALTER TABLE results ADD CONSTRAINT fk_Exam FOREIGN KEY (examid) REFERENCES exams(examid) ON DELETE CASCADE;
+

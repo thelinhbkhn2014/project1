@@ -28,6 +28,8 @@ import java.sql.Date;
  * @author Admin
  */
 public class Controller {
+    private static User currentUser;
+    
     //Amin
     public static Admin signIn(String adminId,String password){
         return AdminSql.signIn(adminId, password);
@@ -72,19 +74,6 @@ public class Controller {
         return QuestionSql.deleteQuestion(questionId);
     }
     
-    //Result
-    public static void insertResult(Result r){
-        ResultSql.insertResult(r);
-    }
-    
-    public static boolean updateResult(Result r){
-        return ResultSql.updateResult(r);
-    }
-    
-    public static boolean deleteResult(String userId, Date testDay, String subjectId){
-        return ResultSql.deleteResult(userId, testDay, subjectId);
-    }
-    
     //Subject
     public static void insertSubject(Subject sj){
         SubjectSql.insertSubject(sj);
@@ -113,7 +102,8 @@ public class Controller {
      
      //User
      public static User signInUser(String userId, String password){
-         return UserSql.signIn(userId, password);
+         currentUser = UserSql.signIn(userId, password);
+         return currentUser;
      }
      
      public static void insertUser(User user){
@@ -127,5 +117,9 @@ public class Controller {
      public static boolean deleteUser(String userId){
          return UserSql.deleteUser(userId);
      }
-    
+ 
+     public static User getCurrentUser(){
+         return currentUser;
+     }
+     
 }

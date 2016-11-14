@@ -79,6 +79,22 @@ public class ExamSql {
         }
         return true;
     }
+    
+    public static boolean deleteExam(Exam exam) {
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                "DELETE FROM exams WHERE examid = ?");
+            stmt.setInt(1, exam.getExamId());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+            return false;
+        }
+        
+        return true;
+    }
 
     public static ArrayList<Question> getAllQuestionInExam(Exam exam) {
         ArrayList<Question> questionList = new ArrayList<>();

@@ -138,7 +138,7 @@ public class Login extends javax.swing.JFrame {
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
 
         String userName = this.txtUsername.getText();
-        String passWord = this.txtPassword.getText();
+        String passWord = String.valueOf(this.txtPassword.getPassword());
         
         if(userName.isEmpty() || passWord.isEmpty()){
             JOptionPane.showMessageDialog(null, "You have not entered information ", "Notification", JOptionPane.INFORMATION_MESSAGE);
@@ -160,16 +160,13 @@ public class Login extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "ERROR");
                 }
             }
- /*           else if(radUser.isSelected()){
+            else if(radUser.isSelected()){
                 user = Controller.signInUser(userName, passWord);
                 try {
-                    if(user != null){
-                        SearchBook sb = new SearchBook();
-                        sb.setVisible(true);
-                        sb.setSize(500, 300);
-                        dispose();
+                    if(user != null) {
+                        System.out.println("Login success");
                     }
-                    else{
+                    else {
                         JOptionPane.showMessageDialog(null, "Client account does not exist", "Notification", JOptionPane.INFORMATION_MESSAGE);
                     }
                 } catch (Exception e) {
@@ -178,7 +175,7 @@ public class Login extends javax.swing.JFrame {
             }
             else{
                 JOptionPane.showMessageDialog(null, "Please select Admin or Client ", "Notification", JOptionPane.INFORMATION_MESSAGE);
-            }*/
+            }
         }
     }//GEN-LAST:event_btnLoginActionPerformed
 

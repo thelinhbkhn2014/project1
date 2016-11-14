@@ -67,8 +67,10 @@ public class ManageExam extends javax.swing.JFrame {
         tbExam = new javax.swing.JTable();
         btnClose = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Quản lý đề thi");
 
         btnSubjectChoice.setText("Chọn");
         btnSubjectChoice.addActionListener(new java.awt.event.ActionListener() {
@@ -118,6 +120,13 @@ public class ManageExam extends javax.swing.JFrame {
             }
         });
 
+        btnDelete.setText("Xóa");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -136,6 +145,8 @@ public class ManageExam extends javax.swing.JFrame {
                         .addComponent(btnCancel))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDelete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnClose)))
                 .addContainerGap())
@@ -154,7 +165,8 @@ public class ManageExam extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnEdit)
-                    .addComponent(btnClose))
+                    .addComponent(btnClose)
+                    .addComponent(btnDelete))
                 .addContainerGap())
         );
 
@@ -199,7 +211,7 @@ public class ManageExam extends javax.swing.JFrame {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         int selectedRow = this.tbExam.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "You must choose one row to edit");
+            JOptionPane.showMessageDialog(this, "Bạn phải chọn một hàng để xóa");
         } else {
             // Edit exam here
             Exam exam = currentExamList.get(selectedRow);
@@ -211,6 +223,24 @@ public class ManageExam extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        int selectedRow = this.tbExam.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Bạn phải chọn một hàng để xóa");
+        } else {
+            if (JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa đề thi này") 
+                    == JOptionPane.YES_OPTION) {
+                Exam exam = this.currentExamList.get(selectedRow);
+                if (ExamSql.deleteExam(exam)) {
+                    DefaultTableModel model = (DefaultTableModel)tbExam.getModel();
+                    model.removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lỗi xóa");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -250,6 +280,7 @@ public class ManageExam extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnClose;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnSubjectChoice;
     private javax.swing.JComboBox<String> cbSubject;

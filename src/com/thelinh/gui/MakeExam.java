@@ -45,7 +45,6 @@ public class MakeExam extends javax.swing.JFrame {
                     spLevelMiddle.setValue((int)tbQuestion.getValueAt(selectedRows, 2));
                     spLevelLow.setValue((int)tbQuestion.getValueAt(selectedRows, 3));
                 }
-                
             }
         });
         this.btnCancel.setEnabled(false);
@@ -87,6 +86,7 @@ public class MakeExam extends javax.swing.JFrame {
         jToggleButton1.setText("jToggleButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tạo đề ngẫu nhiên");
 
         jLabel1.setText("Môn");
 

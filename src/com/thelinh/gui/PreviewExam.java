@@ -136,6 +136,7 @@ public class PreviewExam extends javax.swing.JDialog {
         spTime = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Xem trước");
 
         tbQuestion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

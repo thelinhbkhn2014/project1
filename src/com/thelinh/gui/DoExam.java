@@ -97,7 +97,7 @@ public class DoExam extends JDialog implements Runnable {
         super(parent, modal);
         this.setSize(400, 300);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-
+        this.setTitle("Làm bài thi");
         Container pane = this.getContentPane();
 
         timeLabel = new JLabel("Remaining time: 3600");
@@ -225,7 +225,7 @@ public class DoExam extends JDialog implements Runnable {
     public void start() {
         System.out.println("Starting thread");
         System.out.println("Time: " + time + " seconds");
-        changeQuestion(1, questionList.get(0), answerSuperList.get(0));
+        changeQuestion(0, questionList.get(0), answerSuperList.get(0));
         if (t == null) {
             t = new Thread(this);
             t.start();

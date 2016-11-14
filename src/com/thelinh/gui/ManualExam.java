@@ -126,6 +126,7 @@ public class ManualExam extends javax.swing.JFrame {
         jScrollPane2.setViewportView(jTable2);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Soạn đề thi");
 
         btnSubjectChoice.setText("Chọn");
         btnSubjectChoice.addActionListener(new java.awt.event.ActionListener() {

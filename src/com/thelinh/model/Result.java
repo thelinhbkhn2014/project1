@@ -5,47 +5,49 @@
  */
 package com.thelinh.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  *
  * @author Admin
  */
 public class Result {
-    private String userId;
-    private Date testDay;
-    private String subjectId;
+    private int resultId;
+    private User user;
+    private Date date;
+    private Exam exam;
     private float result;
 
-    public Result(String userId, Date testDay, String subjectId, float result) {
-        this.userId = userId;
-        this.testDay = testDay;
-        this.subjectId = subjectId;
-        this.result = result;
+    public int getResultId() {
+        return resultId;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setResultId(int resultId) {
+        this.resultId = resultId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
     }
 
-    public Date getTestDay() {
-        return testDay;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setTestDay(Date testDay) {
-        this.testDay = testDay;
+    public Date getDate() {
+        return date;
     }
 
-    public String getSubjectId() {
-        return subjectId;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
     }
 
     public float getResult() {
@@ -55,6 +57,4 @@ public class Result {
     public void setResult(float result) {
         this.result = result;
     }
-    
-    
 }
