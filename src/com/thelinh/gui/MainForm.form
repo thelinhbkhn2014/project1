@@ -44,7 +44,23 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnMakeExam">
               <Properties>
-                <Property name="text" type="java.lang.String" value="T&#x1ea1;o &#x111;&#x1ec1; thi"/>
+                <Property name="text" type="java.lang.String" value="T&#x1ea1;o &#x111;&#x1ec1; thi ng&#x1eab;u nhi&#xea;n"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnMakeExamActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="T&#x1ea1;o &#x111;&#x1ec1; thi b&#x1eb1;ng tay"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Qu&#x1ea3;n l&#xfd; &#x111;&#x1ec1; thi"/>
               </Properties>
             </MenuItem>
           </SubComponents>

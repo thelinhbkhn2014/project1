@@ -68,4 +68,15 @@ CREATE TABLE Tests(
 	CONSTRAINT key_2Admins FOREIGN KEY (AdminId) REFERENCES Admins(AdminId),
 	CONSTRAINT key_3Questions FOREIGN KEY (QuestionId) REFERENCES Questions(QuestionId)
 );
+
+create table exams (examId serial NOT NULL PRIMARY KEY  , 
+	subjectId character(10) NOT NULL, 
+	time INT NOT NULL, 
+	examCode character varying(30) NOT NULL);
 	
+CREATE TABLE examElem(examElemId serial NOT NULL PRIMARY KEY, 
+	examId INT NOT NULL, questionId char(10) NOT NULL);
+
+ALTER TABLE exams ADD CONSTRAINT fk_subject FOREIGN KEY (subjectId) REFERENCES subjects(subjectid);
+ALTER TABLE examElem ADD CONSTRAINT fk_exam FOREIGN KEY (examId) REFERENCES exams(examId);
+ALTER TABLE examElem ADD CONSTRAINT fk_question FOREIGN KEY (questionId) REFERENCES questions(questionId);

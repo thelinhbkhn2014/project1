@@ -9,6 +9,7 @@ import com.thelinh.model.Question;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -71,4 +72,65 @@ public class QuestionSql {
         
     }
     
+    public static ArrayList<Question> getRandomListQuestion(String subjectId, int chapter, String level, int quantity){
+        ArrayList<Question> questionList = new ArrayList<>();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                    "select * from questions where "
+                            + "subjectid lIKE ? and levels LIKE ? and chapter = ?"
+                            + "order by RANDOM() LIMIT ?");
+            stmt.setString(1, subjectId.trim() + '%');
+            stmt.setString(2, level);
+            stmt.setInt(3, chapter);
+            stmt.setInt(4, quantity);
+            ResultSet res = stmt.executeQuery();
+            Question q;
+            while (res.next()) {
+                q = new Question(res.getString("questionid").trim(),
+                    res.getString("question"),
+                    res.getString("levels"),
+                    res.getString("subjectid").trim(),
+                    res.getInt("chapter"));
+                questionList.add(q);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        
+        return questionList;
+    }
+    
+    public static ArrayList<Question> getAllQuestionBySubjectId(String subjectId) {
+        ArrayList<Question> questionList = new ArrayList<>();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                    "SELECT * FROM questions WHERE subjectid LIKE ?");
+            stmt.setString(1, subjectId.trim() + "%");
+            ResultSet res = stmt.executeQuery();
+            Question question;
+            //String questionId, String question, String levels, String subjectId, int chapter
+            while (res.next()) {
+                question = new Question(res.getString("questionid").trim(),
+                    res.getString("question"),
+                    res.getString("levels"),
+                    res.getString("subjectid").trim(),
+                    res.getInt("chapter"));
+                questionList.add(question);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return questionList;
+    }
+    
+    public static void main(String[] args) {
+        ArrayList<Question> list = getAllQuestionBySubjectId("IT1110");
+        for (Question q: list) {
+            System.out.println(q.getQuestion());
+        }
+    }
 }

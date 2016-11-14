@@ -9,6 +9,7 @@ import com.thelinh.model.Chap;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -65,8 +66,30 @@ public class ChapSql {
         } catch (SQLException ex) {
             return false;
         }
-        
-        
     }
     
+    public static ArrayList<Integer> getAllChapsBySubject(String subjectId) {
+        ArrayList<Integer> chaps = new ArrayList<>();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                    "select chapter from chaps "
+                            + "where subjectid LIKE ?");
+            stmt.setString(1, subjectId.trim() + '%');
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                chaps.add(res.getInt("chapter"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return chaps;
+    }
+    
+    public static void main(String[] args) {
+        for (int chap : getAllChapsBySubject("IT1111")) {
+            System.out.println(chap);
+        }
+    }
 }

@@ -5,13 +5,12 @@
  */
 package com.thelinh.model;
 
-import com.thelinh.model.Answer;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import utils.Utils;
 
 /**
  *
@@ -56,20 +55,49 @@ public class AnswerSql {
         
     }
     //Phai viet lai database
-    public static boolean deleteAnswer(String questionId,int number){
+    public static boolean deleteAnswer(String questionId, int number){
         String sql = "DELETE FROM Answers WHERE QuestionId = ? AND Number = ?";
-        
         try {
             ps = Connect.getConnect().prepareStatement(sql);
             ps.setString(1, questionId);
             ps.setInt(2, number);
-            return ps.executeUpdate() > 0;
-            
+            return ps.executeUpdate() > 0;      
         } catch (SQLException ex) {
             return false;
         }
-        
-       
     }
     
+    public static ArrayList<Answer> getAnswersByQuestionId(String questionId){
+        ArrayList<Answer> answerList = new ArrayList<>();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                    "SELECT * FROM answers WHERE questionid LIKE ?");
+            stmt.setString(1, Utils.padRight(questionId, 10));
+            ResultSet res = stmt.executeQuery();
+            Answer answer;
+            while (res.next()) {
+                // String questionId, String answer, boolean yesNo, int number
+                boolean yesNo = true;
+                if (res.getString("yesno").equals("false")) {
+                    yesNo = false;
+                }
+                answer = new Answer(questionId, res.getString("answer"), yesNo, 
+                    res.getInt("number"));
+                answerList.add(answer);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        
+        return answerList;
+    }
+    
+    public static void main(String[] args) {
+        ArrayList<Answer> list = getAnswersByQuestionId("1");
+        for (Answer an: list) {
+            System.out.println(an.getNumber() + " " + an.getAnswer() + " " + an.getYesNo());
+        }
+    }
 }

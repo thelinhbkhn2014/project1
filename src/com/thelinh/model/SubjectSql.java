@@ -9,9 +9,11 @@ import com.thelinh.model.Subject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import utils.Utils;
 
 /**
  *
@@ -63,6 +65,49 @@ public class SubjectSql {
             return false;
         }
         
+    }
+    
+    public static ArrayList<Subject> getAllSubject() {
+        ArrayList<Subject> subjects = new ArrayList<>();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                    "SELECT * FROM Subjects");
+            ResultSet result = stmt.executeQuery();
+            Subject subject;
+            while (result.next()) {
+                subject = new Subject(result.getString("subjectid"), 
+                        result.getString("subjectname"));
+                subjects.add(subject);
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return subjects;
+    }
+    
+    public static Subject getSubjectById(String subjectId) {
+        Subject subject = new Subject();
+        try {
+            PreparedStatement stmt = Connect.getConnect().prepareStatement(
+                "SELECT * FROM subjects WHERE subjectid like ?");
+            stmt.setString(1, Utils.padRight(subjectId, 10));
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                subject.setSubjectId(subjectId);
+                subject.setSubjectName(rs.getString("subjectname"));
+            }
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return subject;
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(getSubjectById("IT1110").getSubjectName());
     }
     
 }

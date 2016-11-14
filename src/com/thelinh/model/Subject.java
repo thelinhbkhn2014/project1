@@ -13,6 +13,11 @@ public class Subject {
     private String subjectId;
     private String subjectName;
 
+    public Subject(){
+        this.subjectId = "";
+        this.subjectName = "";
+    }
+    
     public Subject(String subjectId, String subjectName) {
         this.subjectId = subjectId;
         this.subjectName = subjectName;

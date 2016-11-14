@@ -15,7 +15,7 @@ public class Answer {
     private boolean yesNo;
     private int number;
 
-    public Answer(String questionId, String answer, boolean yesNo,int number) {
+    public Answer(String questionId, String answer, boolean yesNo, int number) {
         this.questionId = questionId;
         this.answer = answer;
         this.yesNo = yesNo;
@@ -53,7 +53,5 @@ public class Answer {
     public void setNumber(int number) {
         this.number = number;
     }
-    
-    
     
 }

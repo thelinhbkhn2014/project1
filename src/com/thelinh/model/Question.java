@@ -5,6 +5,8 @@
  */
 package com.thelinh.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Admin
@@ -16,7 +18,12 @@ public class Question {
     private String subjectId;
     private int chapter;
 
-    public Question(String questionId, String question, String levels, String subjectId, int chapter) {
+    public Question(){
+    
+    }
+    
+    public Question(String questionId, String question, String levels, 
+            String subjectId, int chapter) {
         this.questionId = questionId;
         this.question = question;
         this.levels = levels;
@@ -63,8 +70,6 @@ public class Question {
     public void setChapter(int chapter) {
         this.chapter = chapter;
     }
-    
-    
-    
+       
 }
 

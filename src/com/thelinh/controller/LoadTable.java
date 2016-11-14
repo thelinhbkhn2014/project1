@@ -324,8 +324,6 @@ public class LoadTable {
             rs.close();
             ps.close();
             
-            
-            
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
         }

@@ -35,6 +35,8 @@ public class MainForm extends javax.swing.JFrame {
         jMenu2 = new javax.swing.JMenu();
         mnUpdateQuestion = new javax.swing.JMenuItem();
         mnMakeExam = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         mn = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
@@ -70,8 +72,24 @@ public class MainForm extends javax.swing.JFrame {
         mnUpdateQuestion.setText("Cập nhật câu hỏi");
         jMenu2.add(mnUpdateQuestion);
 
-        mnMakeExam.setText("Tạo đề thi");
+        mnMakeExam.setText("Tạo đề thi ngẫu nhiên");
+        mnMakeExam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnMakeExamActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnMakeExam);
+
+        jMenuItem2.setText("Tạo đề thi bằng tay");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem2);
+
+        jMenuItem4.setText("Quản lý đề thi");
+        jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
 
@@ -111,6 +129,14 @@ public class MainForm extends javax.swing.JFrame {
     private void mnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExitActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_mnExitActionPerformed
+
+    private void mnMakeExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMakeExamActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnMakeExamActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,7 +178,9 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenu mn;
     private javax.swing.JMenuItem mnExit;
