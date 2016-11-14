@@ -31,15 +31,16 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         mnUpdateUser = new javax.swing.JMenuItem();
         mnUpdateSubject = new javax.swing.JMenuItem();
-        mnExit = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
         mnUpdateQuestion = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
         mnMakeExam = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         mn = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem7 = new javax.swing.JMenuItem();
+        jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -55,22 +56,32 @@ public class MainForm extends javax.swing.JFrame {
         jMenu1.add(mnUpdateUser);
 
         mnUpdateSubject.setText("Cập nhật môn học");
-        jMenu1.add(mnUpdateSubject);
-
-        mnExit.setText("Thoát");
-        mnExit.addActionListener(new java.awt.event.ActionListener() {
+        mnUpdateSubject.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnExitActionPerformed(evt);
+                mnUpdateSubjectActionPerformed(evt);
             }
         });
-        jMenu1.add(mnExit);
+        jMenu1.add(mnUpdateSubject);
+
+        mnUpdateQuestion.setText("Cập nhật câu hỏi");
+        mnUpdateQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUpdateQuestionActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnUpdateQuestion);
+
+        jMenuItem5.setText("Thoát");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem5);
 
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Tạo đề");
-
-        mnUpdateQuestion.setText("Cập nhật câu hỏi");
-        jMenu2.add(mnUpdateQuestion);
 
         mnMakeExam.setText("Tạo đề thi ngẫu nhiên");
         mnMakeExam.addActionListener(new java.awt.event.ActionListener() {
@@ -96,12 +107,35 @@ public class MainForm extends javax.swing.JFrame {
         mn.setText("Tìm kiếm và thống kê");
 
         jMenuItem3.setText("Tìm kiếm câu hỏi");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         mn.add(jMenuItem3);
 
         jMenuItem7.setText("Tìm kiếm người dùng");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
         mn.add(jMenuItem7);
 
+        jMenuItem6.setText("Tìm kiếm môn học");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        mn.add(jMenuItem6);
+
         jMenuItem1.setText("Thống kê");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         mn.add(jMenuItem1);
 
         jMenuBar1.add(mn);
@@ -123,12 +157,9 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnUpdateUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdateUserActionPerformed
-        // TODO add your handling code here:
+        UpdateUser updateClient = new UpdateUser();
+        updateClient.setVisible(true);
     }//GEN-LAST:event_mnUpdateUserActionPerformed
-
-    private void mnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnExitActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_mnExitActionPerformed
 
     private void mnMakeExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMakeExamActionPerformed
         // TODO add your handling code here:
@@ -137,6 +168,40 @@ public class MainForm extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void mnUpdateSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdateSubjectActionPerformed
+        UpdateSubject updateSubject = new UpdateSubject();
+        updateSubject.setVisible(true);
+    }//GEN-LAST:event_mnUpdateSubjectActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        UpdateQuestion updateQuestion = new UpdateQuestion();
+        updateQuestion.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        Statistics statistics = new Statistics();
+        statistics.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void mnUpdateQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdateQuestionActionPerformed
+        UpdateQuestion updateQuestion = new UpdateQuestion();
+        updateQuestion.setVisible(true);
+    }//GEN-LAST:event_mnUpdateQuestionActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        UpdateUser updateClient = new UpdateUser();
+        updateClient.setVisible(true);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        UpdateSubject updateSubject = new UpdateSubject();
+        updateSubject.setVisible(true);
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,9 +246,10 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenu mn;
-    private javax.swing.JMenuItem mnExit;
     private javax.swing.JMenuItem mnMakeExam;
     private javax.swing.JMenuItem mnUpdateQuestion;
     private javax.swing.JMenuItem mnUpdateSubject;
