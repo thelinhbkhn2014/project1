@@ -94,7 +94,7 @@ public class UpdateUser extends javax.swing.JFrame {
         cbUser = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btnAdd.setText("Thêm mới");
         btnAdd.addActionListener(new java.awt.event.ActionListener() {

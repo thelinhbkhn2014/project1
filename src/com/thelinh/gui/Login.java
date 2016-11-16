@@ -72,6 +72,7 @@ public class Login extends javax.swing.JFrame {
         radAdmin.setText("Admin");
 
         buttonGroup1.add(radUser);
+        radUser.setSelected(true);
         radUser.setText("User");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -124,7 +125,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(radAdmin)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(radUser)
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -164,7 +165,8 @@ public class Login extends javax.swing.JFrame {
                 user = Controller.signInUser(userName, passWord);
                 try {
                     if(user != null) {
-                        System.out.println("Login success");
+                        new UserMain().setVisible(true);
+                        this.dispose();
                     }
                     else {
                         JOptionPane.showMessageDialog(null, "Client account does not exist", "Notification", JOptionPane.INFORMATION_MESSAGE);

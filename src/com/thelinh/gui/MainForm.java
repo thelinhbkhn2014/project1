@@ -100,6 +100,11 @@ public class MainForm extends javax.swing.JFrame {
         jMenu2.add(jMenuItem2);
 
         jMenuItem4.setText("Quản lý đề thi");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem4);
 
         jMenuBar1.add(jMenu2);
@@ -162,11 +167,11 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_mnUpdateUserActionPerformed
 
     private void mnMakeExamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnMakeExamActionPerformed
-        // TODO add your handling code here:
+        new MakeExam().setVisible(true);
     }//GEN-LAST:event_mnMakeExamActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+        new ManualExam().setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void mnUpdateSubjectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUpdateSubjectActionPerformed
@@ -202,6 +207,10 @@ public class MainForm extends javax.swing.JFrame {
         UpdateSubject updateSubject = new UpdateSubject();
         updateSubject.setVisible(true);
     }//GEN-LAST:event_jMenuItem6ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        new ManageExam().setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments

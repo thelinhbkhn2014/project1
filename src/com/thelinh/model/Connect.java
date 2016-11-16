@@ -20,7 +20,7 @@ public class Connect {
         if (conn == null) {
             try {
                 Class.forName("org.postgresql.Driver");
-                conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", "postgres", "thelinh96");
+                conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", "postgres", "1234");
             } catch (Exception ee) {
                 ee.printStackTrace();
             }
