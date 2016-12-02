@@ -98,6 +98,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Xem k&#x1ebf;t qu&#x1ea3;"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnVIewResultActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
