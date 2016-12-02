@@ -35,7 +35,6 @@ public class Connect {
                     return null;
                 }
                 Class.forName("org.postgresql.Driver");
-                System.out.println("User: " + user + "\nPassword: " + password);
                 conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", user, password);
             } catch (Exception ee) {
                 ee.printStackTrace();
