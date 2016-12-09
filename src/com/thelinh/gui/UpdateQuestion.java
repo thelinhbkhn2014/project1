@@ -777,10 +777,14 @@ public class UpdateQuestion extends javax.swing.JFrame {
                     Sheet sheet = wb.getSheet(0);
                     int rows = sheet.getRows();
                     int columns = sheet.getColumns();
+                    System.out.println("Rows: " + rows);
+                    System.out.println("Columns: " + columns);
                     for(int i = 0; i < rows; i++){
-                        Answer answer = new Answer(sheet.getCell(0, i).getContents(), sheet.getCell(1, i).getContents(), 
-                                                   Boolean.parseBoolean(sheet.getCell(2, i).getContents()),                                               
-                                                   Integer.parseInt(sheet.getCell(3, i).getContents()));
+                        Answer answer = new Answer(
+                                    sheet.getCell(0, i).getContents(), 
+                                    sheet.getCell(1, i).getContents(), 
+                                    Boolean.parseBoolean(sheet.getCell(2, i).getContents()),                                               
+                                    Integer.parseInt(sheet.getCell(3, i).getContents()));
                         Controller.insertAnswer(answer);
                    
                     }

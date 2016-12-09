@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.thelinh.controller.Controller;
 import com.thelinh.model.Answer;
 import com.thelinh.model.AnswerSql;
 import com.thelinh.model.Exam;
@@ -28,6 +29,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -266,10 +268,21 @@ public class PreviewExam extends javax.swing.JDialog {
                     document.open();
 
                     // Add title
-                    Paragraph p = new Paragraph("Đề thi môn "
+                    Paragraph p = new Paragraph("Trường Đại học Bách Khoa Hà Nội", timesBold_25);
+                    p.setAlignment(Element.ALIGN_CENTER);
+                    p.setSpacingAfter(5);
+                    document.add(p);
+                    
+                    p = new Paragraph("Đề thi môn "
                             + this.lbSubject.getText(), timesBold_25);
                     p.setAlignment(Element.ALIGN_CENTER);
                     p.setSpacingAfter(25);
+                    document.add(p);
+                    
+                    p = new Paragraph("Người ra đề: " + Controller.getCurrentAdmin().getAdminName()
+                            + ", Ngày ra đề: " + (new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())), times_15);
+                    p.setAlignment(Element.ALIGN_LEFT);
+                    p.setSpacingAfter(5);
                     document.add(p);
 
                     p = new Paragraph("Mã đề: " + this.txtExamCode.getText() + 

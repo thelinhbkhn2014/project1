@@ -114,6 +114,10 @@ public class UserMain extends javax.swing.JFrame {
 //        }
         ArrayList<Exam> examList = ExamSql.getAllExamBySubject(
                 this.subjectList.get(this.cbSubject.getSelectedIndex()));
+        if (examList.size() == 0) {
+            JOptionPane.showMessageDialog(this, "Không có đề thi");
+            return;
+        }
         int ran = ThreadLocalRandom.current().nextInt(0, examList.size());
         
         System.out.println(ran);
