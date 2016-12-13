@@ -29,10 +29,16 @@ import java.sql.Date;
  */
 public class Controller {
     private static User currentUser;
+    private static Admin currentAdmin;
     
     //Amin
-    public static Admin signIn(String adminId,String password){
-        return AdminSql.signIn(adminId, password);
+    public static Admin signIn(String adminId,String password){ // Admin
+        currentAdmin = AdminSql.signIn(adminId, password);
+        return currentAdmin;
+    }
+    
+    public static Admin getCurrentAdmin() {
+        return currentAdmin;
     }
     
     //Answer

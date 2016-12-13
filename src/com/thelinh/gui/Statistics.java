@@ -10,6 +10,7 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
 import static com.itextpdf.text.pdf.BaseFont.IDENTITY_H;
 import com.itextpdf.text.pdf.PdfEncodings;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -19,6 +20,7 @@ import com.thelinh.controller.LoadTable;
 import java.awt.event.ItemEvent;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -219,12 +221,18 @@ public class Statistics extends javax.swing.JFrame {
                 jfc.setDialogTitle("Save File");
                 FileOutputStream fos = new FileOutputStream(jfc.getSelectedFile());
                 PdfWriter.getInstance(document, fos);
-                Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
+//                Font rfont = FontFactory.getFont("resources/fonts/vuArial.ttf", IDENTITY_H, true);
+                Font rfont = new Font(BaseFont.createFont("resources/fonts/vuTimesBold.ttf",
+                    BaseFont.IDENTITY_H, BaseFont.EMBEDDED));
                 document.open();
+
                 document.add(new Paragraph("                                     TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI \n"));
            
+
+                document.add(new Paragraph("                                                    TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
+
                 if(k == 1){ 
-                    document.add(new Paragraph("\t\t THỐNG KÊ MÔN HỌC\n", rfont));
+                    document.add(new Paragraph("\t\t                                                                   THỐNG KÊ MÔN HỌC\n", rfont));
                     String sqlSubject1 = "SELECT Count(SubjectId) AS subjectAll FROM Subjects";
                     String sqlSubject2 = "SELECT Subjects.SubjectName AS subjectChap, Count(*) AS subjectNumber FROM Chaps,Subjects WHERE Chaps.SubjectId = Subjects.SubjectId GROUP BY Subjects.SubjectName";
                     ResultSet rs1 = LoadTable.Display(sqlSubject1);
@@ -252,7 +260,7 @@ public class Statistics extends javax.swing.JFrame {
                 }
                 else if(k == 2){
                     try {                       
-                        document.add(new Paragraph("\t\t THỐNG KÊ CÂU HỎI\n", rfont));
+                        document.add(new Paragraph("\t\t                                                                 THỐNG KÊ CÂU HỎI\n", rfont));
                         String sqlQuestion1 = "SELECT Count(QuestionId) AS questionAll FROM Questions";
                         String sqlQuestion2 = "SELECT SubjectName AS subjectName, Count(QuestionId) AS questionSubject FROM Questions,Subjects WHERE Subjects.SubjectId = Questions.SubjectId GROUP BY Subjects.SubjectName";
                         ResultSet rs1 = LoadTable.Display(sqlQuestion1);
@@ -279,7 +287,7 @@ public class Statistics extends javax.swing.JFrame {
                 }
                 else if(k == 3){
                     try {
-                        document.add(new Paragraph("\t\t THỐNG KÊ NGƯỜI DÙNG\n", rfont));
+                        document.add(new Paragraph("\t\t                                                                  THỐNG KÊ NGƯỜI DÙNG\n", rfont));
                         String sqlUser1 = "SELECT Count(UserId) AS userAll FROM Users";
                         String sqlUser2 = "SELECT Class AS className, Count(UserId) AS userClass FROM Users GROUP BY Class";
                         ResultSet rs1 = LoadTable.Display(sqlUser1);
@@ -305,7 +313,7 @@ public class Statistics extends javax.swing.JFrame {
                         }
                 }
                 else if(k == 4){
-                    document.add(new Paragraph("\t\t THỐNG KÊ KẾT QUẢ\n", rfont));
+                    document.add(new Paragraph("\t\t                                                                        THỐNG KÊ KẾT QUẢ\n", rfont));
                     String sqlResult1 = "SELECT Count(*) AS resultAll FROM Results";
                     String sqlResult2 = "SELECT Count(*) AS exam1 FROM Results WHERE Result <= 4";
                     String sqlResult3 = "SELECT Count(*) AS exam2 FROM Results WHERE Result > 4 AND Result < 6";
@@ -351,10 +359,16 @@ public class Statistics extends javax.swing.JFrame {
                     }
                     document.add(table);
                 }
+
                 document.add(new Paragraph("\n                                                                                  Hà Nội, ngày 09 tháng 12 năm 2016\n"));
                 document.add(new Paragraph("                                                                                                Giáo viên\n"));
                 document.add(new Paragraph("                                                                                            (Ký và ghi rõ họ tên)\n"));
                 
+
+                document.add(new Paragraph("                                                                                                  Hà Nội, ngày 09 tháng 12 năm 2016\n", rfont));
+                document.add(new Paragraph("                                                                                                               Giáo Viên\n",rfont));
+                document.add(new Paragraph("                                                                                                          (Ký và ghi rõ họ tên)\n", rfont));
+
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");
@@ -364,6 +378,8 @@ public class Statistics extends javax.swing.JFrame {
         } catch (DocumentException ex) {
             Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
+            Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnExportReportActionPerformed
