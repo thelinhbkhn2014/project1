@@ -89,6 +89,7 @@ public class LoadTable {
             ArrayList arrayRow = new ArrayList();
             while (rs.next()) {
                 arrayRow.add(rs.getString("SubjectId"));
+                arrayRow.add(rs.getString("SubjectName"));              
                 arrayRow.add(rs.getInt("Chapter"));
                 arrayRow.add(rs.getString("ChapterName"));
 
@@ -101,6 +102,7 @@ public class LoadTable {
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "ERROR", "ERROR", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
         }
 
     }

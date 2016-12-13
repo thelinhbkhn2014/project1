@@ -64,6 +64,11 @@ public class UserMain extends javax.swing.JFrame {
         jLabel2.setText("Kết quả bài thi");
 
         btnVIewResult.setText("Xem kết quả");
+        btnVIewResult.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVIewResultActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -129,6 +134,10 @@ public class UserMain extends javax.swing.JFrame {
         result.setDate(new Date());
         ResultSql.saveResult(result);
     }//GEN-LAST:event_btnDoExamActionPerformed
+
+    private void btnVIewResultActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVIewResultActionPerformed
+        new ViewResult().setVisible(true);
+    }//GEN-LAST:event_btnVIewResultActionPerformed
 
     /**
      * @param args the command line arguments

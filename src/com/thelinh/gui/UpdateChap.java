@@ -45,7 +45,7 @@ import jxl.write.WriteException;
  */
 public class UpdateChap extends javax.swing.JFrame {
     
-    String sql = "SELECT * FROM Chaps";
+    String sql = "SELECT Subjects.*, Chaps.Chapter, Chaps.ChapterName FROM Chaps, Subjects WHERE Subjects.SubjectId = Chaps.SubjectId";
     private static PreparedStatement ps = null;
 
     /**
@@ -281,6 +281,7 @@ public class UpdateChap extends javax.swing.JFrame {
                 btnSearch.doClick();
             } catch (SQLException ex) {
                 JOptionPane.showMessageDialog(null, "ERROR");
+                ex.printStackTrace();
             }
         }
             
@@ -294,7 +295,7 @@ public class UpdateChap extends javax.swing.JFrame {
     private void tbChapMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbChapMouseClicked
         int row = tbChap.getSelectedRow();
         String rowId = (tbChap.getModel().getValueAt(row, 0)).toString();
-        String rowId1 = (tbChap.getModel().getValueAt(row, 1)).toString();
+        String rowId1 = (tbChap.getModel().getValueAt(row, 2)).toString();
         
         String sql1 = "SELECT * FROM Chaps WHERE SubjectId = '" + rowId + "' AND Chapter = " + Integer.parseInt(rowId1);
         ResultSet rs = LoadTable.Display(sql1);
@@ -310,8 +311,8 @@ public class UpdateChap extends javax.swing.JFrame {
     }//GEN-LAST:event_tbChapMouseClicked
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
-        String sql1 = "SELECT * FROM Chaps";
-        String sql2 = "SELECT * FROM Chaps WHERE SubjectId LIKE '%" + txtSearch.getText() + "%'";
+        String sql1 = "SELECT Subjects.*, Chaps.Chapter, Chaps.ChapterName FROM Chaps, Subjects WHERE Subjects.SubjectId = Chaps.SubjectId";
+        String sql2 = "SELECT Subjects.*, Chaps.Chapter, Chaps.ChapterName FROM Chaps, Subjects WHERE Chaps.SubjectId LIKE '%" + txtSearch.getText() + "%' AND Subjects.SubjectId LIKE '%" + txtSearch.getText() + "%'";
         if(txtSearch.getText().length() == 0){
             LoadTable.loadDataChap(sql1, tbChap);
         }
@@ -448,27 +449,36 @@ public class UpdateChap extends javax.swing.JFrame {
                 PdfWriter.getInstance(document, fos);
                 document.open();
                 Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
-                document.add(new Paragraph("                                                            CHAPS OF SUBJECTS SEARCH RESULTS\n", rfont));
-                document.add(new Paragraph("                Search by SubjectId : " + txtSearch.getText() + "\n\n", rfont));
-                PdfPTable table = new PdfPTable(3);
-                PdfPCell header1 = new PdfPCell(new Paragraph("SubjectId", rfont));
-                PdfPCell header2 = new PdfPCell(new Paragraph("Chapter", rfont));
-                PdfPCell header3 = new PdfPCell(new Paragraph("ChapterName", rfont));
-                table.addCell(header1);
-                table.addCell(header2);
-                table.addCell(header3);
+                document.add(new Paragraph("                                                                TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
+                document.add(new Paragraph("                                                            KẾT QUẢ TÌM KIẾM CÁC CHƯƠNG CỦA MÔN HỌC\n", rfont));
+                document.add(new Paragraph("                Tìm kiếm theo mã môn học : " + txtSearch.getText() + "\n\n", rfont));
              
                 TableModel tableModel = tbChap.getModel();
                 for(int i = 0; i < tableModel.getRowCount(); i++){
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 0), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 1)), rfont))); 
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 2), rfont)));
+                    String subject = (String) tableModel.getValueAt(i, 0) + " : " + (String) tableModel.getValueAt(i, 1) + "\n\n";
+                    String id = (String) tableModel.getValueAt(i, 0);
+                    String id1 = id;
+                    document.add(new Paragraph(subject, rfont));
+                    PdfPTable table = new PdfPTable(2);                  
+                    PdfPCell header1 = new PdfPCell(new Paragraph("Chapter", rfont));
+                    PdfPCell header2 = new PdfPCell(new Paragraph("ChapterName", rfont));
+                    table.addCell(header1);
+                    table.addCell(header2);
+                    while(id.equals(id1) && i < tableModel.getRowCount()){
+                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 2)), rfont))); 
+                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 3), rfont)));
+                        i++;
+                        if(i < tableModel.getRowCount())
+                            id1 = (String) tableModel.getValueAt(i, 0);
+                    }                  
+                    document.add(table);
+                    document.add(new Paragraph("\n"));
                                                               
                 }  
-                document.add(table);
-                document.add(new Paragraph("\n                                                                                  Ha Noi, November 4th, 2016\n", rfont));
-                document.add(new Paragraph("                                                                                            Teacher\n", rfont));
-                document.add(new Paragraph("                                                                                        (Signed and Sealed)\n", rfont));
+               
+                document.add(new Paragraph("\n                                                                                                      Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                                                Teacher\n", rfont));
+                document.add(new Paragraph("                                                                                                            (Signed and Sealed)\n", rfont));
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");

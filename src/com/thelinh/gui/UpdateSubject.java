@@ -254,13 +254,14 @@ public class UpdateSubject extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAdd)
-                    .addComponent(btnEdit)
-                    .addComponent(btnDelete)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnExport)
-                    .addComponent(btnAddFile)
-                    .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnAdd)
+                        .addComponent(btnEdit)
+                        .addComponent(btnDelete)
+                        .addComponent(btnAddFile)
+                        .addComponent(jButton1)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -492,13 +493,14 @@ public class UpdateSubject extends javax.swing.JFrame {
                 PdfWriter.getInstance(document, fos);
                 document.open();
                 Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
-                document.add(new Paragraph("\t\t                                                            SUBJECTS SEARCH RESULTS\n", rfont));
+                document.add(new Paragraph("                                                                TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
+                document.add(new Paragraph("\t\t                                                                    KẾT QUẢ TÌM KIẾM MÔN HỌC\n", rfont));
                 switch(k){
                         case 1:                           
-                            document.add(new Paragraph("                Search by SubjectId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo mã môn học : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;    
                         case 2:                          
-                            document.add(new Paragraph("                Search by SubjectName : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo tên môn học : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;                                                     
                     }
                 PdfPTable table = new PdfPTable(2);
@@ -516,9 +518,9 @@ public class UpdateSubject extends javax.swing.JFrame {
                                                            
                 }  
                 document.add(table);
-                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
-                document.add(new Paragraph("                                                                                Teacher\n", rfont));
-                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+                document.add(new Paragraph("\n                                                                                              Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                                        Teacher\n", rfont));
+                document.add(new Paragraph("                                                                                                    (Signed and Sealed)\n", rfont));
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");

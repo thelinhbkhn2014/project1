@@ -221,7 +221,8 @@ public class Statistics extends javax.swing.JFrame {
                 PdfWriter.getInstance(document, fos);
                 Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
                 document.open();
-                
+                document.add(new Paragraph("                                     TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI \n"));
+           
                 if(k == 1){ 
                     document.add(new Paragraph("\t\t THỐNG KÊ MÔN HỌC\n", rfont));
                     String sqlSubject1 = "SELECT Count(SubjectId) AS subjectAll FROM Subjects";
@@ -350,6 +351,10 @@ public class Statistics extends javax.swing.JFrame {
                     }
                     document.add(table);
                 }
+                document.add(new Paragraph("\n                                                                                  Hà Nội, ngày 09 tháng 12 năm 2016\n"));
+                document.add(new Paragraph("                                                                                                Giáo viên\n"));
+                document.add(new Paragraph("                                                                                            (Ký và ghi rõ họ tên)\n"));
+                
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");

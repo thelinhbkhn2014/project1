@@ -54,6 +54,7 @@ public class Login extends javax.swing.JFrame {
 
         jLabel3.setText("Mật khẩu");
 
+        btnLogin.setIcon(new javax.swing.ImageIcon("F:\\IT\\Images\\login (1).png")); // NOI18N
         btnLogin.setText("Đăng nhập");
         btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -61,6 +62,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
+        btnExit.setIcon(new javax.swing.ImageIcon("F:\\IT\\Images\\exit.png")); // NOI18N
         btnExit.setText("Thoát");
         btnExit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

@@ -562,19 +562,20 @@ public class UpdateUser extends javax.swing.JFrame {
                 PdfWriter.getInstance(document, fos);
                 document.open();
                 Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
-                document.add(new Paragraph("\t\t                                                            USERS SEARCH RESULTS\n", rfont));
+                document.add(new Paragraph("                                                                TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
+                document.add(new Paragraph("\t\t                                                                        KẾT QUẢ TÌM KIẾM NGƯỜI DÙNG\n", rfont));
                 switch(k){
                         case 1:                           
-                            document.add(new Paragraph("                Search by UserId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo mã người dùng : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;    
                         case 2:                          
-                            document.add(new Paragraph("                Search by Password : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo mật khẩu : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;    
                         case 3:                           
-                            document.add(new Paragraph("                Search by UserName : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo tên người dùng : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;                               
                         case 4:                           
-                            document.add(new Paragraph("                Search by Class :" + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo lớp :" + txtSearch.getText() + "\n\n", rfont)); 
                             break;                                                                            
                     }
                 PdfPTable table = new PdfPTable(5);
@@ -599,9 +600,9 @@ public class UpdateUser extends javax.swing.JFrame {
                         table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 4), rfont)));                                      
                 }  
                 document.add(table);
-                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
-                document.add(new Paragraph("                                                                                Teacher\n", rfont));
-                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+                document.add(new Paragraph("\n                                                                                          Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                                    Teacher\n", rfont));
+                document.add(new Paragraph("                                                                                                (Signed and Sealed)\n", rfont));
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");

@@ -182,6 +182,11 @@ public class UpdateQuestion extends javax.swing.JFrame {
                 cbQuestionItemStateChanged(evt);
             }
         });
+        cbQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbQuestionActionPerformed(evt);
+            }
+        });
 
         tbQuestion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -923,60 +928,59 @@ public class UpdateQuestion extends javax.swing.JFrame {
                 PdfWriter.getInstance(document, fos);
                 document.open();
                 Font rfont = FontFactory.getFont("C:\\Windows\\Fonts\\Calibri.ttf", IDENTITY_H, true);
-                document.add(new Paragraph("\t\t                                                            QUESTIONS SEARCH RESULTS\n", rfont));
+                document.add(new Paragraph("                                                TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
+                document.add(new Paragraph("\t\t                                                            KẾT QUẢ TÌM KIẾM CÂU HỎI\n", rfont));
                 switch(k){
                         case 1:                           
-                            document.add(new Paragraph("                Search by QuestionId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo QuestionId : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;    
                         case 2:                          
-                            document.add(new Paragraph("                Search by QuestionContent : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo nội dung câu hỏi : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;   
                         case 3:                          
-                            document.add(new Paragraph("                Search by Level : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo level : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;
                         case 4:                          
-                            document.add(new Paragraph("                Search by SubjectId : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo mã môn học : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;
                         case 5:                          
-                            document.add(new Paragraph("                Search by Answer : " + txtSearch.getText() + "\n\n", rfont)); 
+                            document.add(new Paragraph("                Tìm kiếm theo câu trả lời : " + txtSearch.getText() + "\n\n", rfont)); 
                             break;
                     }
-                PdfPTable table = new PdfPTable(8);
-                PdfPCell header1 = new PdfPCell(new Paragraph("QuestionId", rfont));
-                PdfPCell header2 = new PdfPCell(new Paragraph("Question", rfont));
-                PdfPCell header3 = new PdfPCell(new Paragraph("Level", rfont));
-                PdfPCell header4 = new PdfPCell(new Paragraph("SubjectId", rfont));
-                PdfPCell header5 = new PdfPCell(new Paragraph("Chapter", rfont));
-                PdfPCell header6 = new PdfPCell(new Paragraph("AnswerNumber", rfont));
-                PdfPCell header7 = new PdfPCell(new Paragraph("Answer", rfont));
-                PdfPCell header8 = new PdfPCell(new Paragraph("Correct", rfont));
-                
-                table.addCell(header1);
-                table.addCell(header2);
-                table.addCell(header3);
-                table.addCell(header4);
-                table.addCell(header5);
-                table.addCell(header6);
-                table.addCell(header7);
-                table.addCell(header8);
                 
              
                 TableModel tableModel = tbQuestion.getModel();
+                int question = 1;
                 for(int i = 0; i < tableModel.getRowCount(); i++){
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 0), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 1), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 2), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 3), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 4)), rfont)));
-                        table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 5)), rfont)));
+                    String id = (String) tableModel.getValueAt(i, 0);
+                    document.add(new Paragraph("\nCâu " + question + " : ", rfont));
+                    document.add(new Paragraph((String) tableModel.getValueAt(i, 1) + "\n\n", rfont));
+                    PdfPTable table = new PdfPTable(3);
+                    PdfPCell header1 = new PdfPCell(new Paragraph("Đáp án số", rfont));
+                    PdfPCell header2 = new PdfPCell(new Paragraph("Nội dung đáp án", rfont));
+                    PdfPCell header3 = new PdfPCell(new Paragraph("Đúng sai", rfont));
+                    table.addCell(header1);
+                    table.addCell(header2);
+                    table.addCell(header3);
+                    String id1 = id;
+                    char answer = 'A';
+                    while(id.equals(id1) && i < tableModel.getRowCount()){
+                        table.addCell(new PdfPCell(new Paragraph("" + answer)));
                         table.addCell(new PdfPCell(new Paragraph((String) tableModel.getValueAt(i, 6), rfont)));
                         table.addCell(new PdfPCell(new Paragraph(String.valueOf(tableModel.getValueAt(i, 7)), rfont)));
-                                                           
+                        i++;
+                        if(i < tableModel.getRowCount())
+                            id1 = (String) tableModel.getValueAt(i, 0);
+                        answer++;
+                    }
+                    document.add(table);
+                    question++;
+                                                                            
                 }  
-                document.add(table);
-                document.add(new Paragraph("\n                                                                      Ha Noi, November 4th, 2016\n", rfont));
-                document.add(new Paragraph("                                                                                Teacher\n", rfont));
-                document.add(new Paragraph("                                                                            (Signed and Sealed)\n", rfont));
+          
+                document.add(new Paragraph("\n                                                                                                  Ha Noi, November 4th, 2016\n", rfont));
+                document.add(new Paragraph("                                                                                                            Teacher\n", rfont));
+                document.add(new Paragraph("                                                                                                        (Signed and Sealed)\n", rfont));
                 
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");
@@ -987,6 +991,10 @@ public class UpdateQuestion extends javax.swing.JFrame {
             Logger.getLogger(Statistics.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cbQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbQuestionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbQuestionActionPerformed
 
     /**
      * @param args the command line arguments

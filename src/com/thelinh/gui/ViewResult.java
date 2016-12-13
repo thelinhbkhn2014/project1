@@ -21,7 +21,7 @@ public class ViewResult extends javax.swing.JFrame {
      * Creates new form ViewResult
      */
     public ViewResult() {
-        Controller.signInUser("hk", "1");
+//        Controller.signInUser("hk", "1");
         initComponents();
         ArrayList<Result> list = ResultSql.getAllResultByUser(Controller.getCurrentUser());
         DefaultTableModel model = (DefaultTableModel)this.tbResult.getModel();
