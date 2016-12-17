@@ -153,7 +153,7 @@ public class Login extends javax.swing.JFrame {
                     if(admin != null){
                         MainForm mainForm = new MainForm();
                         mainForm.setVisible(true);
-                        mainForm.setSize(500, 300);
+//                        mainForm.setSize(500, 300);
                         dispose();
                     }
                     else {

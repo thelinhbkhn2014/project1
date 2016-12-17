@@ -17,8 +17,6 @@ import com.thelinh.model.Result;
 import com.thelinh.model.ResultSql;
 import com.thelinh.model.Subject;
 import com.thelinh.model.SubjectSql;
-import com.thelinh.model.Test;
-import com.thelinh.model.TestSql;
 import com.thelinh.model.User;
 import com.thelinh.model.UserSql;
 import java.sql.Date;
@@ -93,19 +91,6 @@ public class Controller {
         return SubjectSql.deleteSubject(subjectId);
     }
     
-    //Test
-    public static void insertTest(Test test){
-        TestSql.insertTest(test);
-    }
-    
-     public static boolean updateTest(Test test){
-         return TestSql.updateTest(test);
-     }
-     
-     public static boolean deleteTest(String testId){
-         return TestSql.deleteTest(testId);
-     }
-     
      //User
      public static User signInUser(String userId, String password){
          currentUser = UserSql.signIn(userId, password);
@@ -126,6 +111,11 @@ public class Controller {
  
      public static User getCurrentUser(){
          return currentUser;
+     }
+     
+     public static void logout() {
+         currentUser = null;
+         currentAdmin = null;
      }
      
 }

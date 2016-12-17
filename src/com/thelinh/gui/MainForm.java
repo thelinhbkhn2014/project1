@@ -5,6 +5,8 @@
  */
 package com.thelinh.gui;
 
+import com.thelinh.controller.Controller;
+
 /**
  *
  * @author hoangkien
@@ -27,11 +29,13 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lbImage = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnUpdateUser = new javax.swing.JMenuItem();
         mnUpdateSubject = new javax.swing.JMenuItem();
         mnUpdateQuestion = new javax.swing.JMenuItem();
+        jMenuItem8 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         mnMakeExam = new javax.swing.JMenuItem();
@@ -43,7 +47,9 @@ public class MainForm extends javax.swing.JFrame {
         jMenuItem6 = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+        lbImage.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/exam.jpg"))); // NOI18N
 
         jMenu1.setText("Danh mục");
 
@@ -70,6 +76,14 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
         jMenu1.add(mnUpdateQuestion);
+
+        jMenuItem8.setText("Đăng xuất");
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem8);
 
         jMenuItem5.setText("Thoát");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -151,11 +165,11 @@ public class MainForm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 690, Short.MAX_VALUE)
+            .addComponent(lbImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 444, Short.MAX_VALUE)
+            .addComponent(lbImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -210,7 +224,19 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         new ManageExam().setVisible(true);
+        /*
+            Thoát -> Thoát cả chương trình
+            Xuất file PDF lỗi tiêu đề
+            Thống kê chưa ra bảng
+            In đáp án đề thi
+        */
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        Controller.logout();
+        new Login().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,6 +284,8 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenuItem jMenuItem7;
+    private javax.swing.JMenuItem jMenuItem8;
+    private javax.swing.JLabel lbImage;
     private javax.swing.JMenu mn;
     private javax.swing.JMenuItem mnMakeExam;
     private javax.swing.JMenuItem mnUpdateQuestion;

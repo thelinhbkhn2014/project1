@@ -79,7 +79,6 @@ public class UpdateSubject extends javax.swing.JFrame {
         txtFilterSubjectCode = new javax.swing.JTextField();
         txtFilterSubjectName = new javax.swing.JTextField();
         btnSearch = new javax.swing.JButton();
-        btnExport = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
         btnAddFile = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -154,13 +153,6 @@ public class UpdateSubject extends javax.swing.JFrame {
             }
         });
 
-        btnExport.setText("Xuất biểu mẫu");
-        btnExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportActionPerformed(evt);
-            }
-        });
-
         btnAddFile.setText("Thêm từ file");
         btnAddFile.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,7 +183,7 @@ public class UpdateSubject extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,15 +224,13 @@ public class UpdateSubject extends javax.swing.JFrame {
                                 .addComponent(btnDelete, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnAddFile)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnExport)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(18, 18, 18)
                                 .addComponent(jButton1)
-                                .addGap(0, 45, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
 
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddFile, btnExport, jButton1});
+        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddFile, jButton1});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,14 +244,12 @@ public class UpdateSubject extends javax.swing.JFrame {
                     .addComponent(jLabel3)
                     .addComponent(txtFilterSubjectName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnExport)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnAdd)
-                        .addComponent(btnEdit)
-                        .addComponent(btnDelete)
-                        .addComponent(btnAddFile)
-                        .addComponent(jButton1)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnEdit)
+                    .addComponent(btnDelete)
+                    .addComponent(btnAddFile)
+                    .addComponent(jButton1))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -394,57 +382,6 @@ public class UpdateSubject extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        JFileChooser jfc = new JFileChooser("Save File");
-        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            jfc.setDialogTitle("Save File");
-            File file = jfc.getSelectedFile();
-            WritableWorkbook wb;
-            try {
-                wb = Workbook.createWorkbook(file);
-                WritableSheet sheet = wb.createSheet("Subjects", 0);
-                try {
-                    switch(k){
-                        case 1:
-                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS BY SubjectId"));
-                            sheet.addCell(new Label(0, 1, "SubjectId :" + txtSearch.getText()));
-                            break;
-                        case 2:
-                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS BY SubjectName"));
-                            sheet.addCell(new Label(0, 1, "SubjectName :" + txtSearch.getText()));
-                            break;
-                        case 3:
-                            sheet.addCell(new Label(0, 0, "SUBJECT SEARCH RESULTS"));
-                            break;
-           
-                    }
-                    sheet.addCell(new Label(0, 2, "SubjectId"));
-                    sheet.addCell(new Label(1, 2, "SubjectName"));
-                    int rowBegin = 3;
-                    TableModel tableModel = tbSubject.getModel();
-                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
-                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
-                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
-                    }
-                    wb.write();
-                    wb.close();
-                    JOptionPane.showMessageDialog(null, "Save Success");
-                    
-                } catch (WriteException ex) {
-                    Logger.getLogger(UpdateSubject.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            } catch (IOException ex) {
-                Logger.getLogger(UpdateSubject.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        }
-        
-        
-        
-    }//GEN-LAST:event_btnExportActionPerformed
-
     private void btnAddFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileActionPerformed
         JFileChooser jfc = new JFileChooser();
         if(jfc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
@@ -574,7 +511,6 @@ public class UpdateSubject extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbSubject;
     private javax.swing.JButton jButton1;

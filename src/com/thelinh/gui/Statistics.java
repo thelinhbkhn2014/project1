@@ -16,6 +16,7 @@ import com.itextpdf.text.pdf.PdfEncodings;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.thelinh.controller.Controller;
 import com.thelinh.controller.LoadTable;
 import java.awt.event.ItemEvent;
 import java.io.FileNotFoundException;
@@ -225,10 +226,6 @@ public class Statistics extends javax.swing.JFrame {
                 Font rfont = new Font(BaseFont.createFont("resources/fonts/vuTimesBold.ttf",
                     BaseFont.IDENTITY_H, BaseFont.EMBEDDED));
                 document.open();
-
-                document.add(new Paragraph("                                     TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI \n"));
-           
-
                 document.add(new Paragraph("                                                    TRƯỜNG ĐẠI HỌC BÁCH KHOA HÀ NỘI", rfont));
 
                 if(k == 1){ 
@@ -359,17 +356,9 @@ public class Statistics extends javax.swing.JFrame {
                     }
                     document.add(table);
                 }
-
-                document.add(new Paragraph("\n                                                                                  Hà Nội, ngày 09 tháng 12 năm 2016\n"));
-                document.add(new Paragraph("                                                                                                Giáo viên\n"));
-                document.add(new Paragraph("                                                                                            (Ký và ghi rõ họ tên)\n"));
-                
-
                 document.add(new Paragraph("                                                                                                  Hà Nội, ngày 09 tháng 12 năm 2016\n", rfont));
                 document.add(new Paragraph("                                                                                                               Giáo Viên\n",rfont));
-                document.add(new Paragraph("                                                                                                          (Ký và ghi rõ họ tên)\n", rfont));
-
-                
+                document.add(new Paragraph("                                                                                                          "+ Controller.getCurrentAdmin().getAdminName() +"\n", rfont));
                 document.close();
                 JOptionPane.showMessageDialog(null, "Save success");
             }

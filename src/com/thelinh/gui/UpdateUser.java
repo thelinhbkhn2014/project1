@@ -73,10 +73,8 @@ public class UpdateUser extends javax.swing.JFrame {
         btnAdd = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnExport = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbUser = new javax.swing.JTable();
-        btnExit = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -117,13 +115,6 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
 
-        btnExport.setText("Xuất biểu mẫu");
-        btnExport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExportActionPerformed(evt);
-            }
-        });
-
         tbUser.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -149,13 +140,6 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbUser);
-
-        btnExit.setText("Thoát");
-        btnExit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExitActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Mã người dùng");
 
@@ -190,7 +174,7 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("PDF");
+        jButton1.setText("Xuất ra PDF");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -233,21 +217,17 @@ public class UpdateUser extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addComponent(txtFilterPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                                .addComponent(jLabel6))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnExport)
-                                .addGap(16, 16, 16))
+                                .addGap(28, 28, 28)
+                                .addComponent(jButton1))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnExit)
-                            .addComponent(txtFilterClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(txtFilterClass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(327, 327, 327))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -274,9 +254,8 @@ public class UpdateUser extends javax.swing.JFrame {
                     .addComponent(btnAdd)
                     .addComponent(btnEdit)
                     .addComponent(btnDelete)
-                    .addComponent(btnExport)
-                    .addComponent(btnExit)
-                    .addComponent(btnAddFile))
+                    .addComponent(btnAddFile)
+                    .addComponent(jButton1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -285,18 +264,13 @@ public class UpdateUser extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txtFilterPassword, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtFilterName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtFilterBirthday, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnSearch)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -311,10 +285,6 @@ public class UpdateUser extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         String sql1 = "SELECT * FROM Users";
@@ -442,70 +412,6 @@ public class UpdateUser extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
-        JFileChooser jfc = new JFileChooser("Save File");
-        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            jfc.setDialogTitle("Save File");
-            File file = jfc.getSelectedFile();
-            WritableWorkbook wb;
-            try {
-                wb = Workbook.createWorkbook(file);
-                WritableSheet sheet = wb.createSheet("User", 0);
-                try {
-                    switch(k){
-                        case 1:
-                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY UserId"));
-                            sheet.addCell(new Label(0, 1, "UserId :" + txtSearch.getText()));
-                            break;
-                        case 2:
-                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY Password"));
-                            sheet.addCell(new Label(0, 1, "Password :" + txtSearch.getText()));
-                            break;
-                        case 3:
-                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY UserName"));
-                            sheet.addCell(new Label(0, 1, "UserName :" + txtSearch.getText()));
-                            break;
-                        case 4:
-                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS BY Class"));
-                            sheet.addCell(new Label(0, 1, "Class :" + txtSearch.getText()));
-                            break;
-                        case 5:
-                            sheet.addCell(new Label(0, 0, "USER SEARCH RESULTS"));
-                            break;
-           
-                    }
-                    sheet.addCell(new Label(0, 2, "UserId"));
-                    sheet.addCell(new Label(1, 2, "Password"));
-                    sheet.addCell(new Label(2, 2, "UserName"));
-                    sheet.addCell(new Label(3, 2, "BirthDay"));
-                    sheet.addCell(new Label(4, 2, "Class"));
-                    int rowBegin = 3;
-                    TableModel tableModel = tbUser.getModel();
-                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
-                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
-                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
-                        sheet.addCell(new Label(2, row, (String) tableModel.getValueAt(i, 2)));
-                        SimpleDateFormat sdf = new SimpleDateFormat();
-                        sheet.addCell(new Label(3, row, sdf.format(tableModel.getValueAt(i, 3))));
-                        sheet.addCell(new Label(4, row, (String) tableModel.getValueAt(i, 4)));
-                    }
-                    wb.write();
-                    wb.close();
-                    JOptionPane.showMessageDialog(null, "Save Success");
-                    
-                } catch (WriteException ex) {
-                    Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            } catch (IOException ex) {
-                Logger.getLogger(UpdateUser.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        }
-        
-    }//GEN-LAST:event_btnExportActionPerformed
 
     private void btnAddFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddFileActionPerformed
         JFileChooser jfc = new JFileChooser();
@@ -654,8 +560,6 @@ public class UpdateUser extends javax.swing.JFrame {
     private javax.swing.JButton btnAddFile;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
-    private javax.swing.JButton btnExit;
-    private javax.swing.JButton btnExport;
     private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbUser;
     private javax.swing.JButton jButton1;

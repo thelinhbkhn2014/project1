@@ -19,9 +19,22 @@ public class Connect {
 
     private static Connection conn;
     public static Connection getConnect(){
-        try {
+        try (BufferedReader br = new BufferedReader(new FileReader("config.conf"))) {
+                String user;
+                user = br.readLine();
+                if (user == null) {
+                    JOptionPane.showMessageDialog(null, "Missing user in config.conf");
+                    return null;
+                }
+                String password;
+                password = br.readLine();
+                if (password == null) {
+                    JOptionPane.showMessageDialog(null, "Missing password in config.conf");
+                    return null;
+                }
             Class.forName("org.postgresql.Driver");
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem","postgres","thelinh96");      
+            System.out.println("User:" + user + " Password:" + password );
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/XayDungVaQuanLyDeThiTracNghiem", user, password);
         } catch (Exception ee) {
             ee.printStackTrace();
         }

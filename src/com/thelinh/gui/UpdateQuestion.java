@@ -87,7 +87,6 @@ public class UpdateQuestion extends javax.swing.JFrame {
         btnAddFile = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnPrintFile = new javax.swing.JButton();
         btnSearch = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
@@ -157,13 +156,6 @@ public class UpdateQuestion extends javax.swing.JFrame {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
-            }
-        });
-
-        btnPrintFile.setText("Xuất file");
-        btnPrintFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintFileActionPerformed(evt);
             }
         });
 
@@ -382,31 +374,30 @@ public class UpdateQuestion extends javax.swing.JFrame {
                                     .addComponent(jLabel16))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel15)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
-                                .addComponent(jLabel14)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSearchQuestion)
-                            .addComponent(cbQuestions, 0, 204, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnSearchQuestion))
-                    .addComponent(jLabel13)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel12)
+                                    .addComponent(jLabel15)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
+                                        .addComponent(jLabel14)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtSearchQuestion)
+                                    .addComponent(cbQuestions, 0, 204, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnSearchQuestion))
+                            .addComponent(jLabel13))
+                        .addGap(10, 10, 10))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnPrintFile)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)))
-                .addGap(10, 10, 10))
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnAddQuestion, btnDelete, btnDeleteQuestion, btnEdit, btnEditQuestion});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnPrintFile, jButton1});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -431,9 +422,7 @@ public class UpdateQuestion extends javax.swing.JFrame {
                         .addGap(7, 7, 7)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnPrintFile)
-                            .addComponent(jButton1))
+                        .addComponent(jButton1)
                         .addGap(107, 107, 107))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel16)
@@ -848,80 +837,6 @@ public class UpdateQuestion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnDeleteActionPerformed
 
-    private void btnPrintFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintFileActionPerformed
-        JFileChooser jfc = new JFileChooser("Save File");
-        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            jfc.setDialogTitle("Save File");
-            File file = jfc.getSelectedFile();
-            WritableWorkbook wb;
-            try {
-                wb = Workbook.createWorkbook(file);
-                WritableSheet sheet = wb.createSheet("Questions", 0);
-                try {
-                    switch(q){
-                        case 1:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY QuestionId"));
-                            sheet.addCell(new Label(0, 1, "QuestionId :" + txtSearch.getText()));
-                            break;
-                        case 2:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY QuestionContent"));
-                            sheet.addCell(new Label(0, 1, "QuestionContent :" + txtSearch.getText()));
-                            break;
-                        case 3:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY Level"));
-                            sheet.addCell(new Label(0, 1, "Level :" + txtSearch.getText()));
-                            break;
-                        case 4:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY SubjectId"));
-                            sheet.addCell(new Label(0, 1, "SubjectId :" + txtSearch.getText()));
-                            break;
-                        case 5:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS BY Answer"));
-                            sheet.addCell(new Label(0, 1, "Answer :" + txtSearch.getText()));
-                            break;
-                        case 6:
-                            sheet.addCell(new Label(0, 0, "QUESTIONS SEARCH RESULTS"));
-                            break;
-                    }
-                    sheet.addCell(new Label(0, 2, "QuestionId"));
-                    sheet.addCell(new Label(1, 2, "QuestionContent"));
-                    sheet.addCell(new Label(2, 2, "Level"));
-                    sheet.addCell(new Label(3, 2, "SubjectId"));
-                    sheet.addCell(new Label(4, 2, "Chapter"));
-                    sheet.addCell(new Label(5, 2, "Number"));
-                    sheet.addCell(new Label(6, 2, "Answer"));
-                    sheet.addCell(new Label(7, 2, "YesNo"));
-                    
-                    
-                    int rowBegin = 3;
-                    TableModel tableModel = tbQuestion.getModel();
-                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
-                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
-                        sheet.addCell(new Label(1, row, (String) tableModel.getValueAt(i, 1)));
-                        sheet.addCell(new Label(2, row, (String) tableModel.getValueAt(i, 2)));
-                        sheet.addCell(new Label(3, row, (String) tableModel.getValueAt(i, 3)));
-                        sheet.addCell(new Label(4, row, String.valueOf(tableModel.getValueAt(i, 4))));
-                        sheet.addCell(new Label(5, row, String.valueOf(tableModel.getValueAt(i, 5))));
-                        sheet.addCell(new Label(6, row, (String) tableModel.getValueAt(i, 6)));
-                        sheet.addCell(new Label(7, row, String.valueOf(tableModel.getValueAt(i, 7))));
-                        
-                    }
-                    wb.write();
-                    wb.close();
-                    JOptionPane.showMessageDialog(null, "Save Success");
-                    
-                } catch (WriteException ex) {
-                    Logger.getLogger(UpdateQuestion.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            } catch (IOException ex) {
-                Logger.getLogger(UpdateQuestion.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        }
-    }//GEN-LAST:event_btnPrintFileActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         Document document = new Document() {};
         try {
@@ -1044,7 +959,6 @@ public class UpdateQuestion extends javax.swing.JFrame {
     private javax.swing.JButton btnDeleteQuestion;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnEditQuestion;
-    private javax.swing.JButton btnPrintFile;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearchQuestion;
     private javax.swing.JComboBox<String> cbQuestion;

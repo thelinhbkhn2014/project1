@@ -65,7 +65,13 @@ public class DoExam extends JDialog implements Runnable {
             ArrayList<Answer> answerList) {
         panel.removeAll();
         panel.revalidate();
-        txtTitle.setText("Câu hỏi " + (questionNumber + 1) + ": " + question.getQuestion());
+//        txtTitle.setText("Câu hỏi " + (questionNumber + 1) + ": " + question.getQuestion());
+        String questionText = "<html>" + "Câu hỏi " + (questionNumber + 1) + ": " + question.getQuestion() + "</html>";
+        
+//        for (int i = 0; i < questionText.length() / 20; i++) {
+//            questionText.insert(20 * (i + 1), "<br>");
+//        }
+        txtTitle.setText(questionText.toString());
         for (int i = 0; i < answerList.size(); i++) {
             addACheckBox(Character.toString((char) (i + 65))
                     + ". " + answerList.get(i).getAnswer(), panel, 
@@ -95,7 +101,7 @@ public class DoExam extends JDialog implements Runnable {
     public DoExam(java.awt.Frame parent, boolean modal) {
         // Render Element
         super(parent, modal);
-        this.setSize(400, 300);
+        this.setSize(800, 600);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.setTitle("Làm bài thi");
         Container pane = this.getContentPane();

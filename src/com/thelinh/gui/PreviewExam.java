@@ -262,8 +262,9 @@ public class PreviewExam extends javax.swing.JDialog {
                 if (filepath.indexOf(".") == -1) {
                     filepath = filepath + ".pdf";
                 }
-                Document document = new Document();
+                String dafilepath = (new StringBuffer(filepath)).insert(filepath.length() - 4, ".da").toString();
                 try {
+                    Document document = new Document();
                     PdfWriter.getInstance(document, new FileOutputStream(filepath));
                     document.open();
 
@@ -322,15 +323,82 @@ public class PreviewExam extends javax.swing.JDialog {
                         document.add(table);
                     }
                     document.close();
-                    if (Desktop.isDesktopSupported()) {
-                        try {
-                            File myFile = new File(filepath);
-                            Desktop.getDesktop().open(myFile);
-                        } catch (IOException ex) {
-                            // no application registered for PDFs
-                            System.out.println(ex.toString());
+//                    if (Desktop.isDesktopSupported()) {
+//                        try {
+//                            File myFile = new File(filepath);
+//                            Desktop.getDesktop().open(myFile);
+//                        } catch (IOException ex) {
+//                            // no application registered for PDFs
+//                            System.out.println(ex.toString());
+//                        }
+//                    }
+                    
+                    document = new Document();
+                    PdfWriter.getInstance(document, new FileOutputStream(dafilepath));
+                    document.open();
+
+                    // Add title
+                    p = new Paragraph("Trường Đại học Bách Khoa Hà Nội", timesBold_25);
+                    p.setAlignment(Element.ALIGN_CENTER);
+                    p.setSpacingAfter(5);
+                    document.add(p);
+                    
+                    p = new Paragraph("Đề thi môn "
+                            + this.lbSubject.getText(), timesBold_25);
+                    p.setAlignment(Element.ALIGN_CENTER);
+                    p.setSpacingAfter(25);
+                    document.add(p);
+                    
+                    p = new Paragraph("Người ra đề: " + Controller.getCurrentAdmin().getAdminName()
+                            + ", Ngày ra đề: " + (new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())), times_15);
+                    p.setAlignment(Element.ALIGN_LEFT);
+                    p.setSpacingAfter(5);
+                    document.add(p);
+
+                    p = new Paragraph("Mã đề: " + this.txtExamCode.getText() + 
+                            "    Thời gian làm bài: " + spTime.getValue().toString()
+                            + " phút", timesBold_15);
+                    p.setSpacingAfter(25);
+                    document.add(p);
+
+                    for (int i = 0; i < this.questionList.size(); i++) {
+                        Question question = this.questionList.get(i);
+                        ArrayList<Answer> answerList = AnswerSql.
+                                getAnswersByQuestionId(question.getQuestionId().trim());
+                        Phrase questionNumber = new Phrase("Câu " + (i + 1) + ": ", timesBold_15);
+                        Phrase questionContent = new Phrase(question.getQuestion(), times_15);
+
+                        Paragraph questionTitle = new Paragraph();
+                        questionTitle.add(questionNumber);
+                        questionTitle.add(questionContent);
+
+                        document.add(questionTitle);
+                        PdfPTable table = new PdfPTable(2);
+                        
+                        for (int j = 0; j < answerList.size(); j++) {
+                            Answer ans = answerList.get(j);
+                            Phrase cap = new Phrase(Character.toString((char)(j + 65)) + ". ", timesBold_15);
+                            Phrase answerContent = null;
+                            if (ans.getYesNo()) {
+                                answerContent = new Phrase(ans.getAnswer(), timesBold_15);
+                            }
+                            else {
+                                answerContent = new Phrase(ans.getAnswer(), times_15);
+                            }
+                            Phrase elem = new Phrase();
+                            elem.add(cap);
+                            elem.add(answerContent);
+                            PdfPCell cell = new PdfPCell();
+                            
+                            cell.setBorder(Rectangle.NO_BORDER);
+                            cell.setPhrase(elem);
+                            cell.setFixedHeight(25);
+                            table.addCell(cell);
                         }
+                        document.add(table);
                     }
+                    document.close();
+                    
                 } catch (FileNotFoundException | DocumentException ex) {
                     Logger.getLogger(PreviewExam.class.getName()).log(Level.SEVERE, null, ex);
                 }

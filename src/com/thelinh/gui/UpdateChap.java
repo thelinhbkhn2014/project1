@@ -74,7 +74,6 @@ public class UpdateChap extends javax.swing.JFrame {
         btnAddFile = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
         btnDelete = new javax.swing.JButton();
-        btnPrintFile = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbChap = new javax.swing.JTable();
         txtSubjectId = new javax.swing.JTextField();
@@ -117,13 +116,6 @@ public class UpdateChap extends javax.swing.JFrame {
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
-            }
-        });
-
-        btnPrintFile.setText("Xuất ra file");
-        btnPrintFile.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPrintFileActionPerformed(evt);
             }
         });
 
@@ -182,33 +174,26 @@ public class UpdateChap extends javax.swing.JFrame {
                             .addComponent(txtChapter)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtSearch)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnSearch)
-                                .addGap(109, 109, 109))
+                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(btnAdd)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnEdit)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnDelete)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btnAddFile)
+                                .addComponent(btnAdd)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnPrintFile))
-                            .addComponent(btnPdf, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(btnEdit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnDelete)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtSearch)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnSearch)
+                        .addGap(83, 83, 83)
+                        .addComponent(btnAddFile)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnPdf, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
         layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAdd, btnDelete, btnEdit});
-
-        layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnAddFile, btnPrintFile});
 
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,24 +210,19 @@ public class UpdateChap extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(txtContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(btnPdf))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnAdd)
-                            .addComponent(btnEdit)
-                            .addComponent(btnDelete))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAdd)
+                    .addComponent(btnEdit)
+                    .addComponent(btnDelete))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddFile)
-                    .addComponent(btnPrintFile)
                     .addComponent(btnSearch)
-                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPdf))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE))
         );
@@ -390,55 +370,6 @@ public class UpdateChap extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnAddFileActionPerformed
 
-    private void btnPrintFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPrintFileActionPerformed
-        JFileChooser jfc = new JFileChooser("Save File");
-        if (jfc.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-            jfc.setDialogTitle("Save File");
-            File file = jfc.getSelectedFile();
-            WritableWorkbook wb;
-            try {
-                wb = Workbook.createWorkbook(file);
-                WritableSheet sheet = wb.createSheet("Subjects", 0);
-                try {
-                    if(txtSearch.getText().length() == 0){
-                        try {
-                            sheet.addCell(new Label(0, 0, "CHAPS OF SUBJECTS SEARCH RESULTS"));
-                        } catch (WriteException ex) {
-                            Logger.getLogger(UpdateChap.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    else{
-                        sheet.addCell(new Label(0, 0, "CHAPS OF SUBJECT SEARCH RESULTS BY SubjectId"));
-                        sheet.addCell(new Label(0, 1, "SubjectId :" + txtSearch.getText()));
-                    }
-                    sheet.addCell(new Label(0, 2, "SubjectId"));
-                    sheet.addCell(new Label(1, 2, "Chapter"));
-                    sheet.addCell(new Label(2, 2, "ChapterName"));
-                    int rowBegin = 3;
-                    TableModel tableModel = tbChap.getModel();
-                    for(int row = rowBegin, i = 0; row < rowBegin + tableModel.getRowCount(); row++, i++){
-                        sheet.addCell(new Label(0, row, (String) tableModel.getValueAt(i, 0)));
-                        sheet.addCell(new Label(1, row, String.valueOf(tableModel.getValueAt(i, 1))));
-                        sheet.addCell(new Label(2, row, (String) tableModel.getValueAt(i, 1)));
-                    }
-                    wb.write();
-                    wb.close();
-                    JOptionPane.showMessageDialog(null, "Save Success");
-                    
-                } catch (WriteException ex) {
-                    Logger.getLogger(UpdateChap.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                
-            } catch (IOException ex) {
-                Logger.getLogger(UpdateChap.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            
-        }
-        
-        
-    }//GEN-LAST:event_btnPrintFileActionPerformed
-
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfActionPerformed
         Document document = new Document() {};
         try {
@@ -531,7 +462,6 @@ public class UpdateChap extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnPdf;
-    private javax.swing.JButton btnPrintFile;
     private javax.swing.JButton btnSearch;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
